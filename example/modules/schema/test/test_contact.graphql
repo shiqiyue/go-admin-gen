@@ -1,0 +1,29 @@
+"""添加联系人参数"""
+input ContactAddInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example.Contact") {
+	name: String!
+	email: String!
+	phone: String!
+}
+
+"""修改联系人参数"""
+input ContactEditInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example.Contact") {
+	id: Int64!
+	name: String!
+	email: String!
+	phone: String!
+}
+
+"""删除联系人参数"""
+input ContactRemoveInput {
+	ids: [Int64!]!
+}
+
+extend type Mutation {
+	"""添加联系人"""
+	addContact(data: ContactAddInput!): Boolean!
+	"""修改联系人"""
+	editContact(data: ContactEditInput!): Boolean!
+	"""删除联系人"""
+	removeContact(data: ContactRemoveInput!): Boolean!
+}
+

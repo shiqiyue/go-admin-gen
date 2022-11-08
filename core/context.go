@@ -34,8 +34,20 @@ func (c *GenContext) GenModelSchema() string {
 }
 
 func (c *GenContext) GenApiSchema() string {
+	schemaDocument := &ast.SchemaDocument{}
+	c.genAddReq(schemaDocument)
+	c.genEditReq(schemaDocument)
+	c.genRemoveReq(schemaDocument)
+	c.genMuation(schemaDocument)
+	var buf bytes.Buffer
+	f := formatter.NewFormatter(&buf)
+	f.FormatSchemaDocument(schemaDocument)
+	return c.betterGraphqlFormat(buf.String())
+}
 
-	return ""
+func (c *GenContext) betterGraphqlFormat(graphqlStr string) string {
+	r := strings.ReplaceAll(graphqlStr, "}", "}\n")
+	return r
 }
 
 func (c *GenContext) resolveType(t reflect.Type) {

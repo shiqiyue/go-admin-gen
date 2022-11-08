@@ -5,6 +5,13 @@ import (
 	"strings"
 )
 
+var (
+	CREATED_AT_FIELD_NAME string = strings.ToLower("CreatedAt")
+	UPDATED_AT_FIELD_NAME string = strings.ToLower("UpdatedAt")
+	DELETED_AT_FIELD_NAME string = strings.ToLower("DeletedAt")
+	ID_FIELD_NAME         string = strings.ToLower("Id")
+)
+
 type FieldInfo struct {
 	// 名称
 	Name string
@@ -31,11 +38,20 @@ func (i FieldInfo) IsDetail() bool {
 }
 
 func (i FieldInfo) IsAdd() bool {
-	return strings.Contains(i.Tag, "add")
+	name := strings.ToLower(i.Name)
+	if name == CREATED_AT_FIELD_NAME || name == UPDATED_AT_FIELD_NAME || name == DELETED_AT_FIELD_NAME || name == ID_FIELD_NAME {
+		return false
+	}
+
+	return true
 }
 
 func (i FieldInfo) IsEdit() bool {
-	return strings.Contains(i.Tag, "edit")
+	name := strings.ToLower(i.Name)
+	if name == CREATED_AT_FIELD_NAME || name == UPDATED_AT_FIELD_NAME || name == DELETED_AT_FIELD_NAME {
+		return false
+	}
+	return true
 }
 
 func (i FieldInfo) IsList() bool {

@@ -34,7 +34,11 @@ func WriteFile(content []byte, filePath string, override bool) error {
 			return nil
 		}
 	}
-	err := ioutil.WriteFile(filePath, content, 0777)
+	err := EnsureDirExist(filePath)
+	if err != nil {
+		return err
+	}
+	err = ioutil.WriteFile(filePath, content, 0777)
 	if err != nil {
 		return err
 	}

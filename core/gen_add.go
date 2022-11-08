@@ -3,13 +3,14 @@ package core
 import "github.com/vektah/gqlparser/v2/ast"
 
 func (c *GenContext) addReqName() string {
-	return c.modelName() + "AddReq"
+	return c.modelName() + "AddInput"
 }
 
 func (c *GenContext) genAddReq(SchemaDocument *ast.SchemaDocument) {
 	def := &ast.Definition{}
 	def.Kind = ast.InputObject
 	def.Name = c.addReqName()
+	def.Description = "添加" + c.Name + "参数"
 	def.Directives = []*ast.Directive{c.modelDirective()}
 	def.Fields = make([]*ast.FieldDefinition, 0)
 	for _, field := range c.Fields {

@@ -4,6 +4,7 @@ import (
 	"github.com/iancoleman/strcase"
 	"path"
 	"reflect"
+	"strings"
 )
 
 //go:generate go-options config
@@ -28,8 +29,7 @@ type config struct {
 
 	// Api 目录
 	ApiDir string
-	// Api包名
-	ApiPackage string
+
 	// Api graphql相对路径
 	ApiGraphqlDir string
 }
@@ -41,7 +41,8 @@ type ModelConfig struct {
 }
 
 func (c *ModelConfig) GetModelName() string {
-	return reflect.TypeOf(c).Name()
+	t := reflect.ValueOf(c.Model).Elem().Type()
+	return t.Name()
 }
 
 func (c *ModelConfig) GetModelNameToLowerCamel() string {
@@ -50,6 +51,11 @@ func (c *ModelConfig) GetModelNameToLowerCamel() string {
 
 func (c *ModelConfig) GetModelNameToSnake() string {
 	return strcase.ToSnake(c.GetModelName())
+}
+
+func (c *ModelConfig) GetModelNameWithModuleToSnake(moduleName string) string {
+	modelName := c.GetModelName()
+	return strings.ToLower(moduleName) + "_" + strcase.ToSnake(modelName)
 }
 
 func (c config) GetDataloaderDir() string {

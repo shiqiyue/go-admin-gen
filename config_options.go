@@ -319,38 +319,6 @@ func OptionApiDir(o string) Option {
 	}
 }
 
-type optionApiPackageImpl struct {
-	o string
-}
-
-func (o optionApiPackageImpl) apply(c *config) error {
-	c.ApiPackage = o.o
-	return nil
-}
-
-func (o optionApiPackageImpl) Equal(v optionApiPackageImpl) bool {
-	switch {
-	case !cmp.Equal(o.o, v.o):
-		return false
-	}
-	return true
-}
-
-func (o optionApiPackageImpl) String() string {
-	name := "OptionApiPackage"
-
-	// hack to avoid go vet error about passing a function to Sprintf
-	var value interface{} = o.o
-	return fmt.Sprintf("%s: %+v", name, value)
-}
-
-// OptionApiPackage Api包名
-func OptionApiPackage(o string) Option {
-	return optionApiPackageImpl{
-		o: o,
-	}
-}
-
 type optionApiGraphqlDirImpl struct {
 	o string
 }

@@ -20,18 +20,28 @@ func Gen(options ...Option) error {
 		return err
 	}
 	// 创建目录
-	err = mkdirs(&cfg)
+	/*err = mkdirs(&cfg)
 	if err != nil {
 		return err
-	}
+	}*/
 	for _, modelConfig := range cfg.Models {
+		// 生成model graphql
 		genCtx := core.Resolve(modelConfig.Model, modelConfig.Name)
 		modelGraphql := genCtx.GenModelSchema()
-		filePath := path.Join(cfg.GetModuleGraphqlDir(), modelConfig.GetModelNameToSnake()+".graphql")
+		filePath := path.Join(cfg.GetModuleGraphqlDir(), modelConfig.GetModelNameWithModuleToSnake(cfg.ModuleName)+".graphql")
 		err := util.WriteFile([]byte(modelGraphql), filePath, false)
 		if err != nil {
 			return err
 		}
+
+		// 生成api graphql
+		apiSchema := genCtx.GenApiSchema()
+		filePath = path.Join(cfg.GetApiGraphqlDir(), modelConfig.GetModelNameWithModuleToSnake(cfg.ModuleName)+".graphql")
+		err = util.WriteFile([]byte(apiSchema), filePath, false)
+		if err != nil {
+			return err
+		}
+
 	}
 
 	return nil
@@ -54,9 +64,7 @@ func checkConfig(cfg *config) error {
 	if cfg.ApiDir == "" {
 		return errors.New("ApiDir can not be empty")
 	}
-	if cfg.ApiPackage == "" {
-		return errors.New("ApiPackage can not be empty")
-	}
+
 	if cfg.DataloaderDir == "" {
 		cfg.DataloaderDir = "dataloader"
 	}

@@ -10,36 +10,36 @@ func (c *GenContext) genMuation(SchemaDocument *ast.SchemaDocument) {
 	def.Fields = make([]*ast.FieldDefinition, 0)
 	// 添加
 	addArguments := []*ast.ArgumentDefinition{&ast.ArgumentDefinition{
-		Name: "req",
+		Name: "data",
 		Type: ast.NonNullNamedType(c.addReqName(), nil),
 	}}
 	addMutation := &ast.FieldDefinition{
-		Description: "添加记录",
-		Name:        "add_" + c.modelSneakName(),
+		Description: "添加" + c.Name,
+		Name:        "add" + c.modelName(),
 		Arguments:   addArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}
 	def.Fields = append(def.Fields, addMutation)
 	// 修改
 	editArguments := []*ast.ArgumentDefinition{&ast.ArgumentDefinition{
-		Name: "req",
+		Name: "data",
 		Type: ast.NonNullNamedType(c.editReqName(), nil),
 	}}
 	editMutation := &ast.FieldDefinition{
-		Description: "修改记录",
-		Name:        "edit_" + c.modelSneakName(),
+		Description: "修改" + c.Name,
+		Name:        "edit" + c.modelName(),
 		Arguments:   editArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}
 	def.Fields = append(def.Fields, editMutation)
 	// 删除
 	removeArguments := []*ast.ArgumentDefinition{&ast.ArgumentDefinition{
-		Name: "id",
-		Type: ast.NonNullNamedType("Int", nil),
+		Name: "data",
+		Type: ast.NonNullNamedType(c.removeReqName(), nil),
 	}}
 	removeMutation := &ast.FieldDefinition{
-		Description: "删除记录",
-		Name:        "remove_" + c.modelSneakName(),
+		Description: "删除" + c.Name,
+		Name:        "remove" + c.modelName(),
 		Arguments:   removeArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}
