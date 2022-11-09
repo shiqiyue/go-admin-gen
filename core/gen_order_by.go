@@ -15,7 +15,7 @@ func (c *GenContext) genOrderBy(SchemaDocument *ast.SchemaDocument) {
 			continue
 		}
 		def.Fields = append(def.Fields, &ast.FieldDefinition{
-			Name: field.GqlName(),
+			Name: field.GqlFieldName(),
 			Type: NewType(field.Scalar()),
 		})
 	}

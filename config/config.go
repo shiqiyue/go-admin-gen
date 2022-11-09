@@ -1,4 +1,4 @@
-package go_admin_gen
+package config
 
 import (
 	"github.com/iancoleman/strcase"

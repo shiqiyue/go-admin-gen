@@ -25,11 +25,28 @@ type FieldInfo struct {
 	GormTag string
 }
 
-func (i FieldInfo) GqlName() string {
+// gql 字段名称
+func (i FieldInfo) GqlFieldName() string {
 	return strcase.ToLowerCamel(i.Name)
 }
 
-func (i FieldInfo) DBName() string {
+// golang 字段名称
+func (i FieldInfo) GoFieldName() string {
+	return strcase.ToCamel(i.Name)
+}
+
+// golang 字段类型
+func (i FieldInfo) GoFieldType() string {
+	return i.Type
+}
+
+// golang 字段-是否是指针
+func (i FieldInfo) GoFieldPtr() bool {
+	return i.Nullable
+}
+
+// 数据库字段名称
+func (i FieldInfo) DBFieldName() string {
 	return strcase.ToSnake(i.Name)
 }
 

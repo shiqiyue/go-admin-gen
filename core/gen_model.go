@@ -55,7 +55,7 @@ func (c *GenContext) genModel(SchemaDocument *ast.SchemaDocument) {
 			}
 		}
 		def.Fields = append(def.Fields, &ast.FieldDefinition{
-			Name:        field.GqlName(),
+			Name:        field.GqlFieldName(),
 			Description: field.Description(),
 			Type:        t,
 		})

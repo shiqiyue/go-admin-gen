@@ -2,9 +2,11 @@ package core
 
 import (
 	"bytes"
-	go_admin_gen "github.com/shiqiyue/go-admin-gen"
+	"github.com/shiqiyue/go-admin-gen/config"
+	"github.com/shiqiyue/go-admin-gen/util"
 	"github.com/vektah/gqlparser/v2/ast"
 	"github.com/vektah/gqlparser/v2/formatter"
+	"path"
 	"reflect"
 	"strings"
 )
@@ -16,19 +18,56 @@ type GenContext struct {
 
 	Fields []FieldInfo
 
-	Cfg *go_admin_gen.Config
+	Cfg *config.Config
+
+	ModelCfg *config.ModelConfig
 }
 
-func (c *GenContext) GenModelSchema() string {
+func Resolve(m interface{}, name string, cfg *config.Config, config *config.ModelConfig) *GenContext {
+	t := reflect.ValueOf(m).Elem().Type()
+	context := &GenContext{
+		T:        t,
+		Name:     name,
+		Cfg:      cfg,
+		ModelCfg: config,
+	}
+
+	context.resolveType(t)
+	return context
+}
+
+func (c *GenContext) Gen() error {
+	err := c.GenModelSchema()
+	if err != nil {
+		return err
+	}
+	err = c.GenApiSchema()
+	if err != nil {
+		return err
+	}
+	err = c.genReqDto()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *GenContext) GenModelSchema() error {
 	schemaDocument := &ast.SchemaDocument{}
 	c.genModel(schemaDocument)
 	var buf bytes.Buffer
 	f := formatter.NewFormatter(&buf)
 	f.FormatSchemaDocument(schemaDocument)
-	return buf.String()
+	filePath := path.Join(c.Cfg.GetModuleGraphqlDir(), c.ModelCfg.GetModelNameWithModuleToSnake(c.Cfg.ModuleName)+".graphql")
+	err := util.WriteFile([]byte(buf.String()), filePath, false)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
-func (c *GenContext) GenApiSchema() string {
+func (c *GenContext) GenApiSchema() error {
 	schemaDocument := &ast.SchemaDocument{}
 	c.genAddReq(schemaDocument)
 	c.genEditReq(schemaDocument)
@@ -37,7 +76,12 @@ func (c *GenContext) GenApiSchema() string {
 	var buf bytes.Buffer
 	f := formatter.NewFormatter(&buf)
 	f.FormatSchemaDocument(schemaDocument)
-	return c.betterGraphqlFormat(buf.String())
+	filePath := path.Join(c.Cfg.GetApiGraphqlDir(), c.ModelCfg.GetModelNameWithModuleToSnake(c.Cfg.ModuleName)+".graphql")
+	err := util.WriteFile([]byte(c.betterGraphqlFormat(buf.String())), filePath, false)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *GenContext) betterGraphqlFormat(graphqlStr string) string {

@@ -14,7 +14,7 @@ func (c *GenContext) genColumnEnum(SchemaDocument *ast.SchemaDocument) {
 	def.EnumValues = make([]*ast.EnumValueDefinition, 0)
 	for _, field := range c.Fields {
 		def.EnumValues = append(def.EnumValues, &ast.EnumValueDefinition{
-			Name: field.DBName(),
+			Name: field.DBFieldName(),
 		})
 	}
 	SchemaDocument.Definitions = append(SchemaDocument.Definitions, def)

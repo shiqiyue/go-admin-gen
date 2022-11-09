@@ -18,7 +18,7 @@ func (c *GenContext) genAddReq(SchemaDocument *ast.SchemaDocument) {
 			continue
 		}
 		def.Fields = append(def.Fields, &ast.FieldDefinition{
-			Name: field.GqlName(),
+			Name: field.GqlFieldName(),
 			Type: &ast.Type{
 				NamedType: field.Scalar(),
 				NonNull:   !field.Nullable,

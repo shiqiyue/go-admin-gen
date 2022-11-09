@@ -2,15 +2,15 @@ package go_admin_gen
 
 import (
 	"errors"
+	"github.com/shiqiyue/go-admin-gen/config"
 	"github.com/shiqiyue/go-admin-gen/core"
 	"github.com/shiqiyue/go-admin-gen/util"
 	"os"
-	"path"
 )
 
-func Gen(options ...Option) error {
+func Gen(options ...config.Option) error {
 	// 创建配置
-	cfg, err := newConfig(options...)
+	cfg, err := config.NewConfig(options...)
 	if err != nil {
 		return err
 	}
@@ -19,25 +19,10 @@ func Gen(options ...Option) error {
 	if err != nil {
 		return err
 	}
-	// 创建目录
-	/*err = mkdirs(&cfg)
-	if err != nil {
-		return err
-	}*/
 	for _, modelConfig := range cfg.Models {
 		// 生成model graphql
-		genCtx := core.Resolve(modelConfig.Model, modelConfig.Name)
-		modelGraphql := genCtx.GenModelSchema()
-		filePath := path.Join(cfg.GetModuleGraphqlDir(), modelConfig.GetModelNameWithModuleToSnake(cfg.ModuleName)+".graphql")
-		err := util.WriteFile([]byte(modelGraphql), filePath, false)
-		if err != nil {
-			return err
-		}
-
-		// 生成api graphql
-		apiSchema := genCtx.GenApiSchema()
-		filePath = path.Join(cfg.GetApiGraphqlDir(), modelConfig.GetModelNameWithModuleToSnake(cfg.ModuleName)+".graphql")
-		err = util.WriteFile([]byte(apiSchema), filePath, false)
+		genCtx := core.Resolve(modelConfig.Model, modelConfig.Name, &cfg, modelConfig)
+		err := genCtx.Gen()
 		if err != nil {
 			return err
 		}
@@ -48,7 +33,7 @@ func Gen(options ...Option) error {
 }
 
 // checkConfig 检查配置
-func checkConfig(cfg *Config) error {
+func checkConfig(cfg *config.Config) error {
 	if cfg.ModuleName == "" {
 		return errors.New("ModuleName can not be empty")
 	}
@@ -84,7 +69,7 @@ func checkConfig(cfg *Config) error {
 }
 
 // mkdirs 创建目录
-func mkdirs(cfg *Config) error {
+func mkdirs(cfg *config.Config) error {
 	err := util.EnsureDirExist(cfg.GetDataloaderDir())
 	if err != nil {
 		return err
