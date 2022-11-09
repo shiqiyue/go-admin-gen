@@ -48,7 +48,7 @@ func Gen(options ...Option) error {
 }
 
 // checkConfig 检查配置
-func checkConfig(cfg *config) error {
+func checkConfig(cfg *Config) error {
 	if cfg.ModuleName == "" {
 		return errors.New("ModuleName can not be empty")
 	}
@@ -84,7 +84,7 @@ func checkConfig(cfg *config) error {
 }
 
 // mkdirs 创建目录
-func mkdirs(cfg *config) error {
+func mkdirs(cfg *Config) error {
 	err := util.EnsureDirExist(cfg.GetDataloaderDir())
 	if err != nil {
 		return err

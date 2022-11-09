@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-//go:generate go-options config
-type config struct {
+//go:generate go-options Config
+type Config struct {
 	// 模块名称
 	ModuleName string
 	// 要执行生成任务的model
@@ -58,42 +58,42 @@ func (c *ModelConfig) GetModelNameWithModuleToSnake(moduleName string) string {
 	return strings.ToLower(moduleName) + "_" + strcase.ToSnake(modelName)
 }
 
-func (c config) GetDataloaderDir() string {
+func (c Config) GetDataloaderDir() string {
 	return path.Join(c.ModuleDir, c.DataloaderDir)
 }
 
-func (c config) GetDataloaderPackage() string {
+func (c Config) GetDataloaderPackage() string {
 	return path.Join(c.ModulePackage, c.DataloaderDir)
 }
 
-func (c config) GetDtoDir() string {
+func (c Config) GetDtoDir() string {
 	return path.Join(c.ModuleDir, c.DtoDir)
 }
 
-func (c config) GetDtoPackage() string {
+func (c Config) GetDtoPackage() string {
 	return path.Join(c.ModulePackage, c.DtoDir)
 }
 
-func (c config) GetServiceDir() string {
+func (c Config) GetServiceDir() string {
 	return path.Join(c.ModuleDir, c.ServiceDir)
 }
 
-func (c config) GetServicePackage() string {
+func (c Config) GetServicePackage() string {
 	return path.Join(c.ModulePackage, c.ServiceDir)
 }
 
-func (c config) GetModuleGraphqlDir() string {
+func (c Config) GetModuleGraphqlDir() string {
 	return path.Join(c.ModuleDir, c.ModuleGraphqlDir)
 }
 
-func (c config) GetModuleGraphqlPackage() string {
+func (c Config) GetModuleGraphqlPackage() string {
 	return path.Join(c.ModulePackage, c.ModuleGraphqlDir)
 }
 
-func (c config) GetApiGraphqlDir() string {
+func (c Config) GetApiGraphqlDir() string {
 	return path.Join(c.ModuleDir, c.ApiGraphqlDir)
 }
 
-func (c config) GetApiGraphqlPackage() string {
+func (c Config) GetApiGraphqlPackage() string {
 	return path.Join(c.ModulePackage, c.ApiGraphqlDir)
 }

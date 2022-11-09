@@ -6,19 +6,19 @@ import "fmt"
 
 import "github.com/google/go-cmp/cmp"
 
-type ApplyOptionFunc func(c *config) error
+type ApplyOptionFunc func(c *Config) error
 
-func (f ApplyOptionFunc) apply(c *config) error {
+func (f ApplyOptionFunc) apply(c *Config) error {
 	return f(c)
 }
 
-func newConfig(options ...Option) (config, error) {
-	var c config
+func newConfig(options ...Option) (Config, error) {
+	var c Config
 	err := applyConfigOptions(&c, options...)
 	return c, err
 }
 
-func applyConfigOptions(c *config, options ...Option) error {
+func applyConfigOptions(c *Config, options ...Option) error {
 	for _, o := range options {
 		if err := o.apply(c); err != nil {
 			return err
@@ -28,14 +28,14 @@ func applyConfigOptions(c *config, options ...Option) error {
 }
 
 type Option interface {
-	apply(*config) error
+	apply(*Config) error
 }
 
 type optionModuleNameImpl struct {
 	o string
 }
 
-func (o optionModuleNameImpl) apply(c *config) error {
+func (o optionModuleNameImpl) apply(c *Config) error {
 	c.ModuleName = o.o
 	return nil
 }
@@ -67,7 +67,7 @@ type optionModelsImpl struct {
 	o []*ModelConfig
 }
 
-func (o optionModelsImpl) apply(c *config) error {
+func (o optionModelsImpl) apply(c *Config) error {
 	c.Models = o.o
 	return nil
 }
@@ -99,7 +99,7 @@ type optionModuleDirImpl struct {
 	o string
 }
 
-func (o optionModuleDirImpl) apply(c *config) error {
+func (o optionModuleDirImpl) apply(c *Config) error {
 	c.ModuleDir = o.o
 	return nil
 }
@@ -131,7 +131,7 @@ type optionModulePackageImpl struct {
 	o string
 }
 
-func (o optionModulePackageImpl) apply(c *config) error {
+func (o optionModulePackageImpl) apply(c *Config) error {
 	c.ModulePackage = o.o
 	return nil
 }
@@ -163,7 +163,7 @@ type optionDataloaderDirImpl struct {
 	o string
 }
 
-func (o optionDataloaderDirImpl) apply(c *config) error {
+func (o optionDataloaderDirImpl) apply(c *Config) error {
 	c.DataloaderDir = o.o
 	return nil
 }
@@ -195,7 +195,7 @@ type optionDtoDirImpl struct {
 	o string
 }
 
-func (o optionDtoDirImpl) apply(c *config) error {
+func (o optionDtoDirImpl) apply(c *Config) error {
 	c.DtoDir = o.o
 	return nil
 }
@@ -227,7 +227,7 @@ type optionServiceDirImpl struct {
 	o string
 }
 
-func (o optionServiceDirImpl) apply(c *config) error {
+func (o optionServiceDirImpl) apply(c *Config) error {
 	c.ServiceDir = o.o
 	return nil
 }
@@ -259,7 +259,7 @@ type optionModuleGraphqlDirImpl struct {
 	o string
 }
 
-func (o optionModuleGraphqlDirImpl) apply(c *config) error {
+func (o optionModuleGraphqlDirImpl) apply(c *Config) error {
 	c.ModuleGraphqlDir = o.o
 	return nil
 }
@@ -291,7 +291,7 @@ type optionApiDirImpl struct {
 	o string
 }
 
-func (o optionApiDirImpl) apply(c *config) error {
+func (o optionApiDirImpl) apply(c *Config) error {
 	c.ApiDir = o.o
 	return nil
 }
@@ -323,7 +323,7 @@ type optionApiGraphqlDirImpl struct {
 	o string
 }
 
-func (o optionApiGraphqlDirImpl) apply(c *config) error {
+func (o optionApiGraphqlDirImpl) apply(c *Config) error {
 	c.ApiGraphqlDir = o.o
 	return nil
 }

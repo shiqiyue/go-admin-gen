@@ -2,6 +2,7 @@ package core
 
 import (
 	"bytes"
+	go_admin_gen "github.com/shiqiyue/go-admin-gen"
 	"github.com/vektah/gqlparser/v2/ast"
 	"github.com/vektah/gqlparser/v2/formatter"
 	"reflect"
@@ -14,19 +15,13 @@ type GenContext struct {
 	Name string
 
 	Fields []FieldInfo
+
+	Cfg *go_admin_gen.Config
 }
 
 func (c *GenContext) GenModelSchema() string {
 	schemaDocument := &ast.SchemaDocument{}
 	c.genModel(schemaDocument)
-	//c.genAddReq()
-	//c.genEditReq()
-	//c.genColumnEnum()
-	//c.genBoolExp()
-	//c.genOrderBy()
-	//
-	//c.genMuation()
-	//c.genQuery()
 	var buf bytes.Buffer
 	f := formatter.NewFormatter(&buf)
 	f.FormatSchemaDocument(schemaDocument)
