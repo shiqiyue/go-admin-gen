@@ -5,6 +5,7 @@ import (
 	"github.com/shiqiyue/go-admin-gen/core/dto"
 	"github.com/shiqiyue/go-admin-gen/core/templates"
 	"github.com/shiqiyue/go-admin-gen/util"
+	"path"
 )
 
 func (c *GenContext) editReqDtoFullName() string {
@@ -53,11 +54,12 @@ func (c *GenContext) genReqDto() error {
 			})
 		}
 	}
-	err := c.outputModel(addReqDtoModel, "dto", "")
+
+	err := c.outputModel(addReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("add_%s_dto.go", c.modelSneakName())))
 	if err != nil {
 		return err
 	}
-	err = c.outputModel(editReqDtoModel, "dto", "")
+	err = c.outputModel(editReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("edit_%s_dto.go", c.modelSneakName())))
 	if err != nil {
 		return err
 	}
