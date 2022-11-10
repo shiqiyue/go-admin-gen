@@ -1,12 +1,7 @@
 package core
 
 import (
-	"bytes"
 	"github.com/shiqiyue/go-admin-gen/config"
-	"github.com/shiqiyue/go-admin-gen/util"
-	"github.com/vektah/gqlparser/v2/ast"
-	"github.com/vektah/gqlparser/v2/formatter"
-	"path"
 	"reflect"
 	"strings"
 )
@@ -41,51 +36,15 @@ func (c *GenContext) Gen() error {
 	if err != nil {
 		return err
 	}
-	err = c.GenApiSchema()
+	err = c.GenGraphqlApiSchema()
 	if err != nil {
 		return err
 	}
-	err = c.genReqDto()
+	err = c.genDTO()
 	if err != nil {
 		return err
 	}
 
-	return nil
-}
-
-func (c *GenContext) GenModelSchema() error {
-	schemaDocument := &ast.SchemaDocument{}
-	c.genModel(schemaDocument)
-	var buf bytes.Buffer
-	f := formatter.NewFormatter(&buf)
-	f.FormatSchemaDocument(schemaDocument)
-	filePath := path.Join(c.Cfg.GetModuleGraphqlDir(), c.ModelCfg.GetModelNameWithModuleToSnake(c.Cfg.ModuleName)+".graphql")
-	err := util.WriteFile([]byte(buf.String()), filePath, false)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (c *GenContext) GenApiSchema() error {
-	schemaDocument := &ast.SchemaDocument{}
-	c.genAddReq(schemaDocument)
-	c.genEditReq(schemaDocument)
-	c.genRemoveReq(schemaDocument)
-	c.genSortKey(schemaDocument)
-	c.genPageFilter(schemaDocument)
-	c.genPageInput(schemaDocument)
-	c.genPageResult(schemaDocument)
-	c.genMuation(schemaDocument)
-	c.genQuery(schemaDocument)
-	var buf bytes.Buffer
-	f := formatter.NewFormatter(&buf)
-	f.FormatSchemaDocument(schemaDocument)
-	filePath := path.Join(c.Cfg.GetApiGraphqlDir(), c.ModelCfg.GetModelNameWithModuleToSnake(c.Cfg.ModuleName)+".graphql")
-	err := util.WriteFile([]byte(c.betterGraphqlFormat(buf.String())), filePath, false)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

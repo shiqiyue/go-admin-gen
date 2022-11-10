@@ -1,20 +1,24 @@
 package core
 
 import (
+	"bytes"
 	"github.com/iancoleman/strcase"
+	"github.com/shiqiyue/go-admin-gen/util"
 	"github.com/vektah/gqlparser/v2/ast"
+	"github.com/vektah/gqlparser/v2/formatter"
+	"path"
 )
 
-func (c *GenContext) modelName() string {
+func (c *GenContext) graphqlModelName() string {
 	return c.T.Name()
 }
 
-func (c *GenContext) modelSneakName() string {
-	return strcase.ToSnake(c.modelName())
+func (c *GenContext) graphqlModelSneakName() string {
+	return strcase.ToSnake(c.graphqlModelName())
 }
 
 func (c *GenContext) fullModelName() string {
-	return c.T.PkgPath() + "." + c.modelName()
+	return c.T.PkgPath() + "." + c.graphqlModelName()
 
 }
 
@@ -63,10 +67,10 @@ func (c GenContext) validateDirective(rules string, name string) *ast.Directive 
 	}
 }
 
-func (c *GenContext) genModel(SchemaDocument *ast.SchemaDocument) {
+func (c *GenContext) genGraphqlModel(SchemaDocument *ast.SchemaDocument) {
 	def := &ast.Definition{}
 	def.Kind = ast.Object
-	def.Name = c.modelName()
+	def.Name = c.graphqlModelName()
 	def.Description = c.Name
 	def.Directives = []*ast.Directive{c.modelDirective()}
 	def.Fields = make([]*ast.FieldDefinition, 0)
@@ -93,4 +97,18 @@ func (c *GenContext) genModel(SchemaDocument *ast.SchemaDocument) {
 		})
 	}
 	SchemaDocument.Definitions = append(SchemaDocument.Definitions, def)
+}
+
+func (c *GenContext) GenModelSchema() error {
+	schemaDocument := &ast.SchemaDocument{}
+	c.genGraphqlModel(schemaDocument)
+	var buf bytes.Buffer
+	f := formatter.NewFormatter(&buf)
+	f.FormatSchemaDocument(schemaDocument)
+	filePath := path.Join(c.Cfg.GetModuleGraphqlDir(), c.ModelCfg.GetModelNameWithModuleToSnake(c.Cfg.ModuleName)+".graphql")
+	err := util.WriteFile([]byte(buf.String()), filePath, false)
+	if err != nil {
+		return err
+	}
+	return nil
 }

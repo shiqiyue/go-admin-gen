@@ -8,20 +8,20 @@ import (
 	"path"
 )
 
-func (c *GenContext) editReqDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "." + c.editReqDtoName()
+func (c *GenContext) editDtoFullName() string {
+	return c.Cfg.GetDtoPackage() + "." + c.editDtoName()
 }
 
-func (c *GenContext) editReqDtoName() string {
-	return c.modelName() + "EditDto"
+func (c *GenContext) editDtoName() string {
+	return c.graphqlModelName() + "EditDto"
 }
 
-func (c *GenContext) addReqDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "." + c.addReqDtoName()
+func (c *GenContext) addDtoFullName() string {
+	return c.Cfg.GetDtoPackage() + "." + c.addDtoName()
 }
 
-func (c *GenContext) addReqDtoName() string {
-	return c.modelName() + "EditDto"
+func (c *GenContext) addDtoName() string {
+	return c.graphqlModelName() + "EditDto"
 }
 
 func (c *GenContext) queryDtoFullName() string {
@@ -29,7 +29,7 @@ func (c *GenContext) queryDtoFullName() string {
 }
 
 func (c *GenContext) queryDtoName() string {
-	return c.modelName() + "Query"
+	return c.graphqlModelName() + "Query"
 }
 
 func (c *GenContext) filterDtoFullName() string {
@@ -37,18 +37,18 @@ func (c *GenContext) filterDtoFullName() string {
 }
 
 func (c *GenContext) filterDtoName() string {
-	return c.modelName() + "PageFilter"
+	return c.graphqlModelName() + "PageFilter"
 }
 
-func (c *GenContext) genReqDto() error {
+func (c *GenContext) genDTO() error {
 
 	addReqDtoModel := &dto.Model{
-		Name:        fmt.Sprintf("%sAddDto", c.modelName()),
+		Name:        fmt.Sprintf("%sAddDto", c.graphqlModelName()),
 		Description: fmt.Sprintf("添加%s-入参", c.Name),
 		Fields:      make([]*dto.ModelField, 0),
 	}
 	editReqDtoModel := &dto.Model{
-		Name:        fmt.Sprintf("%sEditDto", c.modelName()),
+		Name:        fmt.Sprintf("%sEditDto", c.graphqlModelName()),
 		Description: fmt.Sprintf("修改%s-入参", c.Name),
 		Fields:      make([]*dto.ModelField, 0),
 	}
@@ -71,11 +71,11 @@ func (c *GenContext) genReqDto() error {
 		}
 	}
 
-	err := c.outputModel(addReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("add_%s_dto.go", c.modelSneakName())))
+	err := c.writeModel(addReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("add_%s_dto.go", c.graphqlModelSneakName())))
 	if err != nil {
 		return err
 	}
-	err = c.outputModel(editReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("edit_%s_dto.go", c.modelSneakName())))
+	err = c.writeModel(editReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("edit_%s_dto.go", c.graphqlModelSneakName())))
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func (c *GenContext) genReqDto() error {
 	return nil
 }
 
-func (c *GenContext) outputModel(m *dto.Model, pack string, filePath string) error {
+func (c *GenContext) writeModel(m *dto.Model, pack string, filePath string) error {
 	templateData := make(map[string]interface{}, 0)
 	templateData["PACKAGE"] = pack
 	templateData["MODEL"] = m
