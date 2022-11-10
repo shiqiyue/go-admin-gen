@@ -9,7 +9,7 @@ import (
 )
 
 func (c *GenContext) editDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "." + c.editDtoName()
+	return c.Cfg.GetDtoFullPackage() + "." + c.editDtoName()
 }
 
 func (c *GenContext) editDtoName() string {
@@ -17,15 +17,15 @@ func (c *GenContext) editDtoName() string {
 }
 
 func (c *GenContext) addDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "." + c.addDtoName()
+	return c.Cfg.GetDtoFullPackage() + "." + c.addDtoName()
 }
 
 func (c *GenContext) addDtoName() string {
-	return c.graphqlModelName() + "EditDto"
+	return c.graphqlModelName() + "AddDto"
 }
 
 func (c *GenContext) queryDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "." + c.queryDtoName()
+	return c.Cfg.GetDtoFullPackage() + "." + c.queryDtoName()
 }
 
 func (c *GenContext) queryDtoName() string {
@@ -33,7 +33,7 @@ func (c *GenContext) queryDtoName() string {
 }
 
 func (c *GenContext) filterDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "." + c.filterDtoName()
+	return c.Cfg.GetDtoFullPackage() + "." + c.filterDtoName()
 }
 
 func (c *GenContext) filterDtoName() string {
@@ -42,19 +42,30 @@ func (c *GenContext) filterDtoName() string {
 
 func (c *GenContext) genDTO() error {
 
-	addReqDtoModel := &dto.Model{
-		Name:        fmt.Sprintf("%sAddDto", c.graphqlModelName()),
+	addDtoModel := &dto.Model{
+		Name:        c.addDtoName(),
 		Description: fmt.Sprintf("添加%s-入参", c.Name),
 		Fields:      make([]*dto.ModelField, 0),
 	}
-	editReqDtoModel := &dto.Model{
-		Name:        fmt.Sprintf("%sEditDto", c.graphqlModelName()),
+	editDtoModel := &dto.Model{
+		Name:        c.editDtoName(),
 		Description: fmt.Sprintf("修改%s-入参", c.Name),
 		Fields:      make([]*dto.ModelField, 0),
 	}
+	filterDtoModel := &dto.Model{
+		Name:        c.filterDtoName(),
+		Description: fmt.Sprintf("过滤%s-入参", c.Name),
+		Fields:      make([]*dto.ModelField, 0),
+	}
+	/*queryDtoModel := &dto.Model{
+		Name:        c.queryDtoName(),
+		Description: fmt.Sprintf("查询%s-入参", c.Name),
+		Fields:      make([]*dto.ModelField, 0),
+	}*/
+
 	for _, field := range c.Fields {
 		if field.IsAdd() {
-			addReqDtoModel.Fields = append(addReqDtoModel.Fields, &dto.ModelField{
+			addDtoModel.Fields = append(addDtoModel.Fields, &dto.ModelField{
 				Name:        field.GoFieldName(),
 				Description: field.Description(),
 				Type:        field.GoFieldType(),
@@ -62,20 +73,61 @@ func (c *GenContext) genDTO() error {
 			})
 		}
 		if field.IsEdit() {
-			editReqDtoModel.Fields = append(editReqDtoModel.Fields, &dto.ModelField{
+			editDtoModel.Fields = append(editDtoModel.Fields, &dto.ModelField{
 				Name:        field.GoFieldName(),
 				Description: field.Description(),
 				Type:        field.GoFieldType(),
 				Ptr:         field.GoFieldPtr(),
 			})
 		}
+		if field.IsFilter() {
+			if !field.IsFilter() {
+				continue
+			}
+			goType := field.Type
+			if goType == "time.Time" {
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+					Name:        field.GoFieldName() + "Min",
+					Description: field.Description() + "-最小值",
+					Type:        field.GoFieldType(),
+					Ptr:         true,
+				})
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+					Name:        field.GoFieldName() + "Max",
+					Description: field.Description() + "-最大值",
+					Type:        field.GoFieldType(),
+					Ptr:         true,
+				})
+			}
+			if goType == "string" || goType == "bool" {
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+					Name:        field.GoFieldName(),
+					Description: field.Description(),
+					Type:        field.GoFieldType(),
+					Ptr:         true,
+				})
+			}
+			if goType == "int32" || goType == "int" || goType == "int64" {
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+					Name:        field.GoFieldName() + "s",
+					Description: field.Description(),
+					Type:        "[]" + field.GoFieldType(),
+					Ptr:         false,
+				})
+			}
+
+		}
 	}
 
-	err := c.writeModel(addReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("add_%s_dto.go", c.graphqlModelSneakName())))
+	err := c.writeModel(addDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.graphqlModelSneakName())))
 	if err != nil {
 		return err
 	}
-	err = c.writeModel(editReqDtoModel, "dto", path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("edit_%s_dto.go", c.graphqlModelSneakName())))
+	err = c.writeModel(editDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.graphqlModelSneakName())))
+	if err != nil {
+		return err
+	}
+	err = c.writeModel(filterDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_filter.go", c.graphqlModelSneakName())))
 	if err != nil {
 		return err
 	}
@@ -95,6 +147,9 @@ func (c *GenContext) writeModel(m *dto.Model, pack string, filePath string) erro
 	err = util.WriteFile([]byte(content), filePath, false)
 	if err != nil {
 		return err
+	}
+	if path.Ext(filePath) == ".go" {
+		return util.RunInteractive(fmt.Sprintf("goimports -w %s", filePath))
 	}
 	return nil
 }

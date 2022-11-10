@@ -13,6 +13,9 @@ func TestGen(t *testing.T) {
 		config.OptionModels([]*config.ModelConfig{&config.ModelConfig{
 			Model: &Contact{},
 			Name:  "联系人",
+		}, &config.ModelConfig{
+			Model: &ContactGroup{},
+			Name:  "联系人分组",
 		}}),
 		config.OptionModuleDir("D:\\project\\go-admin-gen\\example\\modules\\"),
 		config.OptionModulePackage("test"),

@@ -1,12 +1,5 @@
 package dto
 
-import (
-	"encoding/json"
-	"gorm.io/datatypes"
-	"gorm.io/gorm"
-	"time"
-)
-
 // ContactEditDto 修改联系人-入参
 type ContactEditDto struct {
 	// Id ID

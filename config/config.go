@@ -62,38 +62,58 @@ func (c Config) GetDataloaderDir() string {
 	return path.Join(c.ModuleDir, c.DataloaderDir)
 }
 
-func (c Config) GetDataloaderPackage() string {
+func (c Config) GetDataloaderFullPackage() string {
 	return path.Join(c.ModulePackage, c.DataloaderDir)
+}
+
+func (c Config) GetDataloaderPackage() string {
+	return path.Base(c.GetDataloaderFullPackage())
 }
 
 func (c Config) GetDtoDir() string {
 	return path.Join(c.ModuleDir, c.DtoDir)
 }
 
-func (c Config) GetDtoPackage() string {
+func (c Config) GetDtoFullPackage() string {
 	return path.Join(c.ModulePackage, c.DtoDir)
+}
+
+func (c Config) GetDtoPackage() string {
+	return path.Base(c.GetDtoFullPackage())
 }
 
 func (c Config) GetServiceDir() string {
 	return path.Join(c.ModuleDir, c.ServiceDir)
 }
 
-func (c Config) GetServicePackage() string {
+func (c Config) GetServiceFullPackage() string {
 	return path.Join(c.ModulePackage, c.ServiceDir)
+}
+
+func (c Config) GetServicePackage() string {
+	return path.Base(c.GetServiceFullPackage())
 }
 
 func (c Config) GetModuleGraphqlDir() string {
 	return path.Join(c.ModuleDir, c.ModuleGraphqlDir)
 }
 
-func (c Config) GetModuleGraphqlPackage() string {
+func (c Config) GetModuleGraphqlFullPackage() string {
 	return path.Join(c.ModulePackage, c.ModuleGraphqlDir)
+}
+
+func (c Config) GetModuleGraphqlPackage() string {
+	return path.Base(c.GetModuleGraphqlFullPackage())
 }
 
 func (c Config) GetApiGraphqlDir() string {
 	return path.Join(c.ModuleDir, c.ApiGraphqlDir)
 }
 
-func (c Config) GetApiGraphqlPackage() string {
+func (c Config) GetApiGraphqlFullPackage() string {
 	return path.Join(c.ModulePackage, c.ApiGraphqlDir)
+}
+
+func (c Config) GetApiGraphqlPackage() string {
+	return path.Base(c.GetApiGraphqlFullPackage())
 }
