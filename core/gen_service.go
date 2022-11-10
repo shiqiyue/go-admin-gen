@@ -212,7 +212,7 @@ func (c *GenContext) genServiceListMethod() *dto.ModelMethod {
 		},
 		Results: []*dto.ModelMethodResult{
 			&dto.ModelMethodResult{
-				Type: fmt.Sprintf("[]model.%s", c.ModelName()),
+				Type: fmt.Sprintf("[]*model.%s", c.ModelName()),
 				Ptr:  false,
 			},
 			&dto.ModelMethodResult{

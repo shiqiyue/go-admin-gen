@@ -291,7 +291,7 @@ func (c *GenContext) genGraphqlPageInput(SchemaDocument *ast.SchemaDocument) {
 	})
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
 		Name:         "sortKey",
-		Description:  "排序方向；true:asc;false:desc",
+		Description:  "排序字段",
 		Type:         ast.NamedType(c.graphqlSortKeyEnumName(), nil),
 		DefaultValue: &ast.Value{Kind: ast.EnumValue, Raw: "ID"},
 	})

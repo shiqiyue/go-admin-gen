@@ -67,7 +67,7 @@ func (s *ContactGroupSrv) GetById(ctx context.Context, id int64) (*model.Contact
 }
 
 // List 联系人分组列表查询
-func (s *ContactGroupSrv) List(ctx context.Context, query dto.ContactGroupQuery) ([]model.ContactGroup, int64, error) {
+func (s *ContactGroupSrv) List(ctx context.Context, query dto.ContactGroupQuery) ([]*model.ContactGroup, int64, error) {
 
 	db := gorms.GetDb(ctx, s.Db)
 	qs := model.NewContactGroupQuerySet(db)
