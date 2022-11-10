@@ -1,6 +1,9 @@
 package core
 
-import "github.com/vektah/gqlparser/v2/ast"
+import (
+	"fmt"
+	"github.com/vektah/gqlparser/v2/ast"
+)
 
 func (c *GenContext) genQuery(SchemaDocument *ast.SchemaDocument) {
 	def := &ast.Definition{
@@ -8,7 +11,7 @@ func (c *GenContext) genQuery(SchemaDocument *ast.SchemaDocument) {
 		Name: "Query",
 	}
 	def.Fields = make([]*ast.FieldDefinition, 0)
-	// 列表查询
+	// 分页查询
 	listQueryArguments := []*ast.ArgumentDefinition{
 		NewListAndItemNotNullArgument(c.columnEnumName(), "distinct_on", ""),
 		NewArgument(SCALAR_INT, "limit", ""),
@@ -17,7 +20,7 @@ func (c *GenContext) genQuery(SchemaDocument *ast.SchemaDocument) {
 		NewArgument(c.boolExpName(), "where", ""),
 	}
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
-		Description: "列表查询",
+		Description: fmt.Sprintf("%s分页", c.Name),
 		Name:        c.modelSneakName() + "s",
 		Arguments:   listQueryArguments,
 		Type:        ast.NonNullListType(ast.NonNullNamedType(c.modelName(), nil), nil),
@@ -35,13 +38,13 @@ func (c *GenContext) genQuery(SchemaDocument *ast.SchemaDocument) {
 
 	// 主键查询
 	pkArguments := []*ast.ArgumentDefinition{
-		NewNotNullArgument(SCALAR_INT, "id", ""),
+		NewNotNullArgument(SCALAR_INT64, "id", ""),
 	}
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
-		Description: "根据ID查询",
+		Description: c.Name,
 		Name:        c.modelSneakName(),
 		Arguments:   pkArguments,
-		Type:        NewNotNullType(c.modelName()),
+		Type:        NewType(c.modelName()),
 	})
 
 	SchemaDocument.Extensions = append(SchemaDocument.Extensions, def)

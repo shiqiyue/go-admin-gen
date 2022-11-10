@@ -9,7 +9,7 @@ import (
 
 // ContactEditDto 修改联系人-入参
 type ContactEditDto struct {
-	// Id
+	// Id ID
 	Id int64
 
 	// Name 名称

@@ -14,8 +14,32 @@ input ContactEditInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example
 }
 
 """删除联系人参数"""
-input ContactRemoveInput {
+input ContactRemovesInput {
 	ids: [Int64!]!
+}
+
+"""联系人分页过滤参数"""
+input ContactPageInput {
+	"""创建时间-最小值"""
+	createdAtMin: Time
+	"""创建时间-最大值"""
+	createdAtMax: Time
+	"""更新时间-最小值"""
+	updatedAtMin: Time
+	"""更新时间-最大值"""
+	updatedAtMax: Time
+	"""名称"""
+	name: String
+	"""邮箱"""
+	email: String
+	"""手机号码"""
+	phone: String
+}
+
+"""联系人分页参数"""
+input ContactPageInput {
+	pageNum: [Int!]! = 1@validate(rules: "min=1,max=1000", name: "页数")
+	pageSize: [Int!]! = 10@validate(rules: "min=1,max=200", name: "分页大小")
 }
 
 extend type Mutation {
@@ -24,6 +48,15 @@ extend type Mutation {
 	"""修改联系人"""
 	editContact(data: ContactEditInput!): Boolean!
 	"""删除联系人"""
-	removeContact(data: ContactRemoveInput!): Boolean!
+	removeContacts(data: ContactRemovesInput!): Boolean!
+}
+
+extend type Query {
+	"""联系人分页"""
+	contacts(distinct_on: [ContactColumn!], limit: Int, offset: Int, order_by: [ContactOrderBy!], where: ContactBoolExp): [Contact!]!
+	"""数量查询"""
+	contact_count(distinct_on: [ContactColumn!], limit: Int, offset: Int, order_by: [ContactOrderBy!], where: ContactBoolExp): Int!
+	"""联系人"""
+	contact(id: Int64!): Contact
 }
 

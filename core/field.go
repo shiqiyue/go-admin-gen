@@ -71,6 +71,14 @@ func (i FieldInfo) IsEdit() bool {
 	return true
 }
 
+func (i FieldInfo) IsFilter() bool {
+	name := strings.ToLower(i.Name)
+	if name == ID_FIELD_NAME || name == DELETED_AT_FIELD_NAME {
+		return false
+	}
+	return true
+}
+
 func (i FieldInfo) IsList() bool {
 	return strings.Contains(i.Tag, "list")
 }

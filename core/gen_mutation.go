@@ -1,6 +1,9 @@
 package core
 
-import "github.com/vektah/gqlparser/v2/ast"
+import (
+	"fmt"
+	"github.com/vektah/gqlparser/v2/ast"
+)
 
 func (c *GenContext) genMuation(SchemaDocument *ast.SchemaDocument) {
 	def := &ast.Definition{
@@ -39,7 +42,7 @@ func (c *GenContext) genMuation(SchemaDocument *ast.SchemaDocument) {
 	}}
 	removeMutation := &ast.FieldDefinition{
 		Description: "删除" + c.Name,
-		Name:        "remove" + c.modelName(),
+		Name:        fmt.Sprintf("remove%ss", c.modelName()),
 		Arguments:   removeArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}

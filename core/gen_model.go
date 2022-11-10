@@ -31,6 +31,25 @@ func (c GenContext) modelDirective() *ast.Directive {
 	}
 }
 
+func (c GenContext) validateDirective(rules string, name string) *ast.Directive {
+	return &ast.Directive{
+		Name: "validate",
+		Arguments: []*ast.Argument{&ast.Argument{
+			Name: "rules",
+			Value: &ast.Value{
+				Raw:  rules,
+				Kind: ast.StringValue,
+			},
+		}, &ast.Argument{
+			Name: "name",
+			Value: &ast.Value{
+				Raw:  name,
+				Kind: ast.StringValue,
+			},
+		}},
+	}
+}
+
 func (c *GenContext) genModel(SchemaDocument *ast.SchemaDocument) {
 	def := &ast.Definition{}
 	def.Kind = ast.Object

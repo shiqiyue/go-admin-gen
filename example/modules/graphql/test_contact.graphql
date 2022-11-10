@@ -1,7 +1,10 @@
 """联系人"""
 type Contact @goModel(model: "github.com/shiqiyue/go-admin-gen/example.Contact") {
+	"""ID"""
 	id: Int64!
+	"""创建时间"""
 	createdAt: Time!
+	"""更新时间"""
 	updatedAt: Time!
 	"""名称"""
 	name: String!

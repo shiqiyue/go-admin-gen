@@ -3,7 +3,7 @@ package core
 import "github.com/vektah/gqlparser/v2/ast"
 
 func (c *GenContext) removeReqName() string {
-	return c.modelName() + "RemoveInput"
+	return c.modelName() + "RemovesInput"
 }
 
 func (c *GenContext) genRemoveReq(SchemaDocument *ast.SchemaDocument) {
