@@ -212,6 +212,7 @@ func (c *GenContext) genGraphqlPageFilter(SchemaDocument *ast.SchemaDocument) {
 	def.Kind = ast.InputObject
 	def.Name = c.graphqlPageFilterName()
 	def.Description = c.Name + "分页过滤参数"
+	def.Directives = []*ast.Directive{c.goModelDirective(c.filterDtoFullName())}
 	def.Fields = make([]*ast.FieldDefinition, 0)
 	for _, field := range c.Fields {
 		if !field.IsFilter() {
@@ -281,7 +282,6 @@ func (c *GenContext) genGraphqlPageInput(SchemaDocument *ast.SchemaDocument) {
 		Name:        "filter",
 		Description: "过滤条件",
 		Type:        ast.NamedType(c.graphqlPageFilterName(), nil),
-		Directives:  []*ast.Directive{c.goModelDirective(c.filterDtoFullName())},
 	})
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
 		Name:         "reverse",
