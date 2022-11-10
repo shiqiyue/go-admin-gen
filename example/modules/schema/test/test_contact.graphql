@@ -1,25 +1,49 @@
 """添加联系人参数"""
 input ContactAddInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example.Contact") {
+	"""名称"""
 	name: String!
+	"""邮箱"""
 	email: String!
+	"""手机号码"""
 	phone: String!
 }
 
 """修改联系人参数"""
 input ContactEditInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example.Contact") {
+	"""ID"""
 	id: Int64!
+	"""名称"""
 	name: String!
+	"""邮箱"""
 	email: String!
+	"""手机号码"""
 	phone: String!
 }
 
 """删除联系人参数"""
 input ContactRemovesInput {
+	"""ID列表"""
 	ids: [Int64!]!
 }
 
+"""联系人 排序"""
+enum ContactSortKeys {
+	"""ID"""
+	ID
+	"""创建时间"""
+	CREATED_AT
+	"""更新时间"""
+	UPDATED_AT
+	"""名称"""
+	NAME
+	"""邮箱"""
+	EMAIL
+	"""手机号码"""
+	PHONE
+}
+
 """联系人分页过滤参数"""
-input ContactPageInput {
+input ContactPageFilter {
 	"""创建时间-最小值"""
 	createdAtMin: Time
 	"""创建时间-最大值"""
@@ -37,9 +61,25 @@ input ContactPageInput {
 }
 
 """联系人分页参数"""
-input ContactPageInput {
-	pageNum: [Int!]! = 1@validate(rules: "min=1,max=1000", name: "页数")
-	pageSize: [Int!]! = 10@validate(rules: "min=1,max=200", name: "分页大小")
+input ContactPageInput @goModel(model: "test/dto.ContactQuery") {
+	"""页数"""
+	pageNum: Int! = 1@validate(rules: "min=1,max=1000", name: "页数")
+	"""分页大小"""
+	pageSize: Int! = 10@validate(rules: "min=1,max=200", name: "分页大小")
+	"""过滤条件"""
+	filter: ContactPageFilter @goModel(model: "test/dto.ContactPageFilter")
+	"""排序方向；true:asc;false:desc"""
+	reverse: Boolean = false
+	"""排序方向；true:asc;false:desc"""
+	sortKey: ContactSortKeys = ID
+}
+
+"""联系人分页-结果"""
+type ContactPageResult {
+	"""记录"""
+	records: [Contact]!
+	"""总数"""
+	total: Int64!
 }
 
 extend type Mutation {
@@ -52,11 +92,9 @@ extend type Mutation {
 }
 
 extend type Query {
-	"""联系人分页"""
-	contacts(distinct_on: [ContactColumn!], limit: Int, offset: Int, order_by: [ContactOrderBy!], where: ContactBoolExp): [Contact!]!
-	"""数量查询"""
-	contact_count(distinct_on: [ContactColumn!], limit: Int, offset: Int, order_by: [ContactOrderBy!], where: ContactBoolExp): Int!
 	"""联系人"""
 	contact(id: Int64!): Contact
+	"""联系人分页"""
+	contacts(data: ContactPageInput!): ContactPageResult!
 }
 
