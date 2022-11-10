@@ -23,6 +23,7 @@ func (c *GenContext) genAddReq(SchemaDocument *ast.SchemaDocument) {
 				NamedType: field.Scalar(),
 				NonNull:   !field.Nullable,
 			},
+			Description: field.Description(),
 		})
 	}
 	SchemaDocument.Definitions = append(SchemaDocument.Definitions, def)

@@ -75,6 +75,7 @@ func (c *GenContext) GenApiSchema() error {
 	c.genSortKey(schemaDocument)
 	c.genPageFilter(schemaDocument)
 	c.genPageInput(schemaDocument)
+	c.genPageResult(schemaDocument)
 	c.genMuation(schemaDocument)
 	c.genQuery(schemaDocument)
 	var buf bytes.Buffer

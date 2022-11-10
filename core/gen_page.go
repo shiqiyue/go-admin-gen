@@ -11,6 +11,10 @@ func (c *GenContext) pageInputName() string {
 	return fmt.Sprintf("%sPageInput", c.modelName())
 }
 
+func (c *GenContext) pageResultName() string {
+	return fmt.Sprintf("%sPageResult", c.modelName())
+}
+
 func (c *GenContext) pageFilterName() string {
 	return fmt.Sprintf("%sPageFilter", c.modelName())
 }
@@ -126,5 +130,25 @@ func (c *GenContext) genPageInput(SchemaDocument *ast.SchemaDocument) {
 		Type:         ast.NamedType(c.sortKeyEnumName(), nil),
 		DefaultValue: &ast.Value{Kind: ast.EnumValue, Raw: "ID"},
 	})
+	SchemaDocument.Definitions = append(SchemaDocument.Definitions, def)
+}
+
+func (c *GenContext) genPageResult(SchemaDocument *ast.SchemaDocument) {
+	def := &ast.Definition{}
+	def.Kind = ast.Object
+	def.Name = c.pageResultName()
+	def.Description = c.Name + "分页-结果"
+	def.Fields = make([]*ast.FieldDefinition, 0)
+	def.Fields = append(def.Fields, &ast.FieldDefinition{
+		Name:        "records",
+		Description: "记录",
+		Type:        ast.NonNullListType(NewType(c.modelName()), nil),
+	})
+	def.Fields = append(def.Fields, &ast.FieldDefinition{
+		Name:        "total",
+		Description: "总数",
+		Type:        ast.NonNullNamedType(SCALAR_INT64, nil),
+	})
+
 	SchemaDocument.Definitions = append(SchemaDocument.Definitions, def)
 }

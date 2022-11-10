@@ -13,8 +13,9 @@ func (c *GenContext) genRemoveReq(SchemaDocument *ast.SchemaDocument) {
 	def.Description = "删除" + c.Name + "参数"
 	def.Fields = make([]*ast.FieldDefinition, 0)
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
-		Name: "ids",
-		Type: ast.NonNullListType(&ast.Type{NamedType: SCALAR_INT64, NonNull: true}, nil),
+		Name:        "ids",
+		Type:        ast.NonNullListType(&ast.Type{NamedType: SCALAR_INT64, NonNull: true}, nil),
+		Description: "ID列表",
 	})
 
 	SchemaDocument.Definitions = append(SchemaDocument.Definitions, def)

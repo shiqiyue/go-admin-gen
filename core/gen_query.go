@@ -11,30 +11,6 @@ func (c *GenContext) genQuery(SchemaDocument *ast.SchemaDocument) {
 		Name: "Query",
 	}
 	def.Fields = make([]*ast.FieldDefinition, 0)
-	// 分页查询
-	listQueryArguments := []*ast.ArgumentDefinition{
-		NewListAndItemNotNullArgument(c.columnEnumName(), "distinct_on", ""),
-		NewArgument(SCALAR_INT, "limit", ""),
-		NewArgument(SCALAR_INT, "offset", ""),
-		NewListAndItemNotNullArgument(c.orderByName(), "order_by", ""),
-		NewArgument(c.boolExpName(), "where", ""),
-	}
-	def.Fields = append(def.Fields, &ast.FieldDefinition{
-		Description: fmt.Sprintf("%s分页", c.Name),
-		Name:        c.modelSneakName() + "s",
-		Arguments:   listQueryArguments,
-		Type:        ast.NonNullListType(ast.NonNullNamedType(c.modelName(), nil), nil),
-		Directives:  nil,
-		Position:    nil,
-	})
-
-	// 数量查询
-	def.Fields = append(def.Fields, &ast.FieldDefinition{
-		Description: "数量查询",
-		Name:        c.modelSneakName() + "_count",
-		Arguments:   listQueryArguments,
-		Type:        NewNotNullType(SCALAR_INT),
-	})
 
 	// 主键查询
 	pkArguments := []*ast.ArgumentDefinition{
@@ -45,6 +21,19 @@ func (c *GenContext) genQuery(SchemaDocument *ast.SchemaDocument) {
 		Name:        c.modelSneakName(),
 		Arguments:   pkArguments,
 		Type:        NewType(c.modelName()),
+	})
+
+	// 分页查询
+	listQueryArguments := []*ast.ArgumentDefinition{
+		NewNotNullArgument(c.pageInputName(), "data", ""),
+	}
+	def.Fields = append(def.Fields, &ast.FieldDefinition{
+		Description: fmt.Sprintf("%s分页", c.Name),
+		Name:        c.modelSneakName() + "s",
+		Arguments:   listQueryArguments,
+		Type:        ast.NonNullNamedType(c.pageResultName(), nil),
+		Directives:  nil,
+		Position:    nil,
 	})
 
 	SchemaDocument.Extensions = append(SchemaDocument.Extensions, def)
