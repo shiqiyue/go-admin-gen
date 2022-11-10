@@ -2,6 +2,7 @@ package dto
 
 // ContactEditDto 修改联系人-入参
 type ContactEditDto struct {
+
 	// Id ID
 	Id int64
 

@@ -2,12 +2,11 @@ package dto
 
 import (
 	"gorm.io/datatypes"
-
-	"gorm.io/datatypes"
 )
 
 // ContactGroupAddDto 添加联系人分组-入参
 type ContactGroupAddDto struct {
+
 	// Name 名称
 	Name string
 

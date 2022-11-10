@@ -6,17 +6,23 @@ import (
 {{- range .INPUTS }}
 	"{{.}}"
 {{end}}
-	"encoding/json"
-	"gorm.io/datatypes"
-	"gorm.io/gorm"
-	"time"
 )
 
-// {{.MODEL.Name}} {{.MODEL.Description}}
-type {{.MODEL.Name}} struct {
-{{- range .MODEL.Fields }}
-	// {{.Name}} {{.Description}}
-	{{if .Ptr}}{{.Name}} *{{.Type}} {{else}}{{.Name}} {{.Type}} {{end}} {{.Tag}}
+{{ range $MODEL := .MODELS }}
+// {{$MODEL.Name}} {{$MODEL.Description}}
+type {{$MODEL.Name}} struct {
+{{range $Field:= $MODEL.Fields }}
+	// {{$Field.Name}} {{$Field.Description}}
+	{{if $Field.Ptr}}{{$Field.Name}} *{{$Field.Type}} {{else}}{{$Field.Name}} {{$Field.Type}} {{end}} {{$Field.Tag}}
 {{ end }}
 }
+
+{{range $METHOD:= $MODEL.Methods }}
+// {{$METHOD.Name}} {{$METHOD.Description}}
+func ({{$MODEL.ShortName}} *{{$MODEL.Name}}) {{$METHOD.Name}}({{$METHOD.OutputArgs}}){{$METHOD.OutputResults}} {
+	{{$METHOD.Body}}
+}
+{{end}}
+{{ end }}
+
 `

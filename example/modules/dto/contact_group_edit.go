@@ -2,12 +2,11 @@ package dto
 
 import (
 	"gorm.io/datatypes"
-
-	"gorm.io/datatypes"
 )
 
 // ContactGroupEditDto 修改联系人分组-入参
 type ContactGroupEditDto struct {
+
 	// Id ID
 	Id int64
 

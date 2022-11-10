@@ -173,21 +173,32 @@ func (c *GenContext) genDTO() error {
 		Ptr:         true,
 		Tag:         "",
 	})
+	/*queryDtoModel.Methods = append(queryDtoModel.Methods, &dto.ModelMethod{
+		Name:        "Name",
+		Description: "名称",
+		Body:        "return \"hello\"",
+		Args: []*dto.ModelMethodArg{&dto.ModelMethodArg{
+			Name: "ctx",
+			Type: "context.Context",
+			Ptr:  false,
+		}},
+		Results: []*dto.ModelMethodResult{&dto.ModelMethodResult{
+			Type: "string",
+			Ptr:  false,
+		}},
+	})*/
 
-	err := c.writeModel(addDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.graphqlModelSneakName())), defaultImports)
+	err := c.writeModel([]*dto.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.graphqlModelSneakName())), defaultImports)
 	if err != nil {
 		return err
 	}
-	err = c.writeModel(editDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.graphqlModelSneakName())), defaultImports)
-	if err != nil {
-		return err
-	}
-	err = c.writeModel(filterDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_filter.go", c.graphqlModelSneakName())), defaultImports)
+	err = c.writeModel([]*dto.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.graphqlModelSneakName())), defaultImports)
 	if err != nil {
 		return err
 	}
 	queryImports := append(defaultImports, c.fullModelPath())
-	err = c.writeModel(queryDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.graphqlModelSneakName())), queryImports)
+	queryImports = append(queryImports, "context")
+	err = c.writeModel([]*dto.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.graphqlModelSneakName())), queryImports)
 	if err != nil {
 		return err
 	}
@@ -195,10 +206,10 @@ func (c *GenContext) genDTO() error {
 	return nil
 }
 
-func (c *GenContext) writeModel(m *dto.Model, pack string, filePath string, inputs []string) error {
+func (c *GenContext) writeModel(ms []*dto.Model, pack string, filePath string, inputs []string) error {
 	templateData := make(map[string]interface{}, 0)
 	templateData["PACKAGE"] = pack
-	templateData["MODEL"] = m
+	templateData["MODELS"] = ms
 	templateData["INPUTS"] = inputs
 
 	r, err := util.DoTemplate(templates.MODEL, "test.go", templateData)
