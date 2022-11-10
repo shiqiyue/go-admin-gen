@@ -19,7 +19,7 @@ func TestGen(t *testing.T) {
 			Name:  "联系人分组",
 		}}),
 		config.OptionModuleDir("D:\\project\\go-admin-gen\\example\\modules\\"),
-		config.OptionModulePackage("test"),
+		config.OptionModulePackage("github.com/shiqiyue/go-admin-gen/example/modules"),
 		config.OptionApiDir("D:\\project\\go-admin-gen\\example\\api\\"),
 	)
 	if err != nil {

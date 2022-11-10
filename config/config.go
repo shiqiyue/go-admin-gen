@@ -61,11 +61,11 @@ func (c *ModelConfig) GetModelNameWithModuleToSnake(moduleName string) string {
 }
 
 func (c Config) GetDataloaderDir() string {
-	return path.Join(c.ModuleDir, c.DataloaderDir)
+	return path.Join(c.ModuleDir, c.ModuleName, c.DataloaderDir)
 }
 
 func (c Config) GetDataloaderFullPackage() string {
-	return path.Join(c.ModulePackage, c.DataloaderDir)
+	return path.Join(c.ModulePackage, c.ModuleName, c.DataloaderDir)
 }
 
 func (c Config) GetDataloaderPackage() string {
@@ -73,11 +73,11 @@ func (c Config) GetDataloaderPackage() string {
 }
 
 func (c Config) GetDtoDir() string {
-	return path.Join(c.ModuleDir, c.DtoDir)
+	return path.Join(c.ModuleDir, c.ModuleName, c.DtoDir)
 }
 
 func (c Config) GetDtoFullPackage() string {
-	return path.Join(c.ModulePackage, c.DtoDir)
+	return path.Join(c.ModulePackage, c.ModuleName, c.DtoDir)
 }
 
 func (c Config) GetDtoPackage() string {
@@ -85,11 +85,11 @@ func (c Config) GetDtoPackage() string {
 }
 
 func (c Config) GetServiceDir() string {
-	return path.Join(c.ModuleDir, c.ServiceDir)
+	return path.Join(c.ModuleDir, c.ModuleName, c.ServiceDir)
 }
 
 func (c Config) GetServiceFullPackage() string {
-	return path.Join(c.ModulePackage, c.ServiceDir)
+	return path.Join(c.ModulePackage, c.ModuleName, c.ServiceDir)
 }
 
 func (c Config) GetServicePackage() string {
@@ -97,11 +97,11 @@ func (c Config) GetServicePackage() string {
 }
 
 func (c Config) GetModuleGraphqlDir() string {
-	return path.Join(c.ModuleDir, c.ModuleGraphqlDir)
+	return path.Join(c.ModuleDir, c.ModuleName, c.ModuleGraphqlDir)
 }
 
 func (c Config) GetModuleGraphqlFullPackage() string {
-	return path.Join(c.ModulePackage, c.ModuleGraphqlDir)
+	return path.Join(c.ModulePackage, c.ModuleName, c.ModuleGraphqlDir)
 }
 
 func (c Config) GetModuleGraphqlPackage() string {
@@ -109,13 +109,5 @@ func (c Config) GetModuleGraphqlPackage() string {
 }
 
 func (c Config) GetApiGraphqlDir() string {
-	return path.Join(c.ModuleDir, c.ApiGraphqlDir)
-}
-
-func (c Config) GetApiGraphqlFullPackage() string {
-	return path.Join(c.ModulePackage, c.ApiGraphqlDir)
-}
-
-func (c Config) GetApiGraphqlPackage() string {
-	return path.Base(c.GetApiGraphqlFullPackage())
+	return path.Join(c.ApiDir, c.ApiGraphqlDir)
 }
