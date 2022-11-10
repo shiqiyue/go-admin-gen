@@ -13,12 +13,22 @@ func (c *GenContext) graphqlModelName() string {
 	return c.T.Name()
 }
 
+func (c *GenContext) ModelName() string {
+	return c.T.Name()
+
+}
+
 func (c *GenContext) graphqlModelSneakName() string {
 	return strcase.ToSnake(c.graphqlModelName())
 }
 
 func (c *GenContext) fullModelName() string {
-	return c.T.PkgPath() + "." + c.graphqlModelName()
+	return c.T.PkgPath() + "." + c.ModelName()
+
+}
+
+func (c *GenContext) fullModelPath() string {
+	return c.T.PkgPath()
 
 }
 

@@ -2,6 +2,8 @@ package dto
 
 import (
 	"gorm.io/datatypes"
+
+	"gorm.io/datatypes"
 )
 
 // ContactGroupAddDto 添加联系人分组-入参

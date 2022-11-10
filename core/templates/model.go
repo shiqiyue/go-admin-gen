@@ -3,6 +3,9 @@ package templates
 var MODEL = `
 package {{.PACKAGE}}
 import (
+{{- range .INPUTS }}
+	"{{.}}"
+{{end}}
 	"encoding/json"
 	"gorm.io/datatypes"
 	"gorm.io/gorm"

@@ -8,6 +8,13 @@ import (
 	"path"
 )
 
+var defaultImports = []string{
+	"encoding/json",
+	"gorm.io/datatypes",
+	"gorm.io/gorm",
+	"time",
+}
+
 func (c *GenContext) editDtoFullName() string {
 	return c.Cfg.GetDtoFullPackage() + "." + c.editDtoName()
 }
@@ -57,11 +64,11 @@ func (c *GenContext) genDTO() error {
 		Description: fmt.Sprintf("过滤%s-入参", c.Name),
 		Fields:      make([]*dto.ModelField, 0),
 	}
-	/*queryDtoModel := &dto.Model{
+	queryDtoModel := &dto.Model{
 		Name:        c.queryDtoName(),
 		Description: fmt.Sprintf("查询%s-入参", c.Name),
 		Fields:      make([]*dto.ModelField, 0),
-	}*/
+	}
 
 	for _, field := range c.Fields {
 		if field.IsAdd() {
@@ -131,16 +138,56 @@ func (c *GenContext) genDTO() error {
 
 		}
 	}
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+		Name:        "PageNum",
+		Description: "第几页",
+		Type:        "int",
+		Ptr:         true,
+		Tag:         "",
+	})
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+		Name:        "PageSize",
+		Description: "每页几条记录",
+		Type:        "int",
+		Ptr:         true,
+		Tag:         "",
+	})
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+		Name:        "Filter",
+		Description: "过滤条件",
+		Type:        c.filterDtoName(),
+		Ptr:         true,
+		Tag:         "",
+	})
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+		Name:        "Reverse",
+		Description: "排序方向; true:asc, false:desc",
+		Type:        "bool",
+		Ptr:         true,
+		Tag:         "",
+	})
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+		Name:        "SortKey",
+		Description: "排序字段",
+		Type:        fmt.Sprintf("model.%sDBSchemaField", c.ModelName()),
+		Ptr:         true,
+		Tag:         "",
+	})
 
-	err := c.writeModel(addDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.graphqlModelSneakName())))
+	err := c.writeModel(addDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.graphqlModelSneakName())), defaultImports)
 	if err != nil {
 		return err
 	}
-	err = c.writeModel(editDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.graphqlModelSneakName())))
+	err = c.writeModel(editDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.graphqlModelSneakName())), defaultImports)
 	if err != nil {
 		return err
 	}
-	err = c.writeModel(filterDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_filter.go", c.graphqlModelSneakName())))
+	err = c.writeModel(filterDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_filter.go", c.graphqlModelSneakName())), defaultImports)
+	if err != nil {
+		return err
+	}
+	queryImports := append(defaultImports, c.fullModelPath())
+	err = c.writeModel(queryDtoModel, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.graphqlModelSneakName())), queryImports)
 	if err != nil {
 		return err
 	}
@@ -148,10 +195,12 @@ func (c *GenContext) genDTO() error {
 	return nil
 }
 
-func (c *GenContext) writeModel(m *dto.Model, pack string, filePath string) error {
+func (c *GenContext) writeModel(m *dto.Model, pack string, filePath string, inputs []string) error {
 	templateData := make(map[string]interface{}, 0)
 	templateData["PACKAGE"] = pack
 	templateData["MODEL"] = m
+	templateData["INPUTS"] = inputs
+
 	r, err := util.DoTemplate(templates.MODEL, "test.go", templateData)
 	if err != nil {
 		return err
