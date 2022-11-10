@@ -31,6 +31,19 @@ func (c GenContext) modelDirective() *ast.Directive {
 	}
 }
 
+func (c GenContext) goModelDirective(model string) *ast.Directive {
+	return &ast.Directive{
+		Name: "goModel",
+		Arguments: []*ast.Argument{&ast.Argument{
+			Name: "model",
+			Value: &ast.Value{
+				Raw:  model,
+				Kind: ast.StringValue,
+			},
+		}},
+	}
+}
+
 func (c GenContext) validateDirective(rules string, name string) *ast.Directive {
 	return &ast.Directive{
 		Name: "validate",

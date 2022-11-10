@@ -79,6 +79,20 @@ func (i FieldInfo) IsFilter() bool {
 	return true
 }
 
+func (i FieldInfo) IsSortKey() bool {
+	name := strings.ToLower(i.Name)
+	if name == DELETED_AT_FIELD_NAME {
+		return false
+	}
+	if i.IsJson() {
+		return false
+	}
+	if i.IsArray() {
+		return false
+	}
+	return true
+}
+
 func (i FieldInfo) IsList() bool {
 	return strings.Contains(i.Tag, "list")
 }
@@ -98,6 +112,13 @@ func (i FieldInfo) Scalar() string {
 
 func (i FieldInfo) IsArray() bool {
 	if strings.Contains(i.Type, "Array") {
+		return true
+	}
+	return false
+}
+
+func (i FieldInfo) IsJson() bool {
+	if strings.Contains(i.Type, "JSON") {
 		return true
 	}
 	return false

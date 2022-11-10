@@ -72,6 +72,7 @@ func (c *GenContext) GenApiSchema() error {
 	c.genAddReq(schemaDocument)
 	c.genEditReq(schemaDocument)
 	c.genRemoveReq(schemaDocument)
+	c.genSortKey(schemaDocument)
 	c.genPageFilter(schemaDocument)
 	c.genPageInput(schemaDocument)
 	c.genMuation(schemaDocument)

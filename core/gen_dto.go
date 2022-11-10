@@ -9,7 +9,7 @@ import (
 )
 
 func (c *GenContext) editReqDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "/" + c.editReqDtoName()
+	return c.Cfg.GetDtoPackage() + "." + c.editReqDtoName()
 }
 
 func (c *GenContext) editReqDtoName() string {
@@ -17,11 +17,27 @@ func (c *GenContext) editReqDtoName() string {
 }
 
 func (c *GenContext) addReqDtoFullName() string {
-	return c.Cfg.GetDtoPackage() + "/" + c.addReqDtoName()
+	return c.Cfg.GetDtoPackage() + "." + c.addReqDtoName()
 }
 
 func (c *GenContext) addReqDtoName() string {
 	return c.modelName() + "EditDto"
+}
+
+func (c *GenContext) queryDtoFullName() string {
+	return c.Cfg.GetDtoPackage() + "." + c.queryDtoName()
+}
+
+func (c *GenContext) queryDtoName() string {
+	return c.modelName() + "Query"
+}
+
+func (c *GenContext) filterDtoFullName() string {
+	return c.Cfg.GetDtoPackage() + "." + c.filterDtoName()
+}
+
+func (c *GenContext) filterDtoName() string {
+	return c.modelName() + "PageFilter"
 }
 
 func (c *GenContext) genReqDto() error {
