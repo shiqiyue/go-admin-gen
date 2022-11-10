@@ -10,6 +10,7 @@ import (
 func TestGen(t *testing.T) {
 	os.RemoveAll("D:\\project\\go-admin-gen\\example\\modules\\")
 	err := go_admin_gen.Gen(config.OptionModuleName("test"),
+		config.OptionPkgPackage("test/pkg"),
 		config.OptionModels([]*config.ModelConfig{&config.ModelConfig{
 			Model: &Contact{},
 			Name:  "联系人",

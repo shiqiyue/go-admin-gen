@@ -37,6 +37,9 @@ func checkConfig(cfg *config.Config) error {
 	if cfg.ModuleName == "" {
 		return errors.New("ModuleName can not be empty")
 	}
+	if cfg.PkgPackage == "" {
+		return errors.New("PkgPackage can not be empty")
+	}
 	if len(cfg.Models) == 0 {
 		return errors.New("Models can not be empty")
 	}

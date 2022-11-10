@@ -44,6 +44,10 @@ func (c *GenContext) Gen() error {
 	if err != nil {
 		return err
 	}
+	err = c.genService()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

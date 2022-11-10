@@ -20,7 +20,7 @@ func (c *GenContext) editDtoFullName() string {
 }
 
 func (c *GenContext) editDtoName() string {
-	return c.graphqlModelName() + "EditDto"
+	return c.ModelName() + "EditDto"
 }
 
 func (c *GenContext) addDtoFullName() string {
@@ -28,7 +28,7 @@ func (c *GenContext) addDtoFullName() string {
 }
 
 func (c *GenContext) addDtoName() string {
-	return c.graphqlModelName() + "AddDto"
+	return c.ModelName() + "AddDto"
 }
 
 func (c *GenContext) queryDtoFullName() string {
@@ -36,7 +36,7 @@ func (c *GenContext) queryDtoFullName() string {
 }
 
 func (c *GenContext) queryDtoName() string {
-	return c.graphqlModelName() + "Query"
+	return c.ModelName() + "Query"
 }
 
 func (c *GenContext) filterDtoFullName() string {
@@ -44,7 +44,7 @@ func (c *GenContext) filterDtoFullName() string {
 }
 
 func (c *GenContext) filterDtoName() string {
-	return c.graphqlModelName() + "PageFilter"
+	return c.ModelName() + "PageFilter"
 }
 
 func (c *GenContext) genDTO() error {
@@ -173,32 +173,18 @@ func (c *GenContext) genDTO() error {
 		Ptr:         true,
 		Tag:         "",
 	})
-	/*queryDtoModel.Methods = append(queryDtoModel.Methods, &dto.ModelMethod{
-		Name:        "Name",
-		Description: "名称",
-		Body:        "return \"hello\"",
-		Args: []*dto.ModelMethodArg{&dto.ModelMethodArg{
-			Name: "ctx",
-			Type: "context.Context",
-			Ptr:  false,
-		}},
-		Results: []*dto.ModelMethodResult{&dto.ModelMethodResult{
-			Type: "string",
-			Ptr:  false,
-		}},
-	})*/
 
-	err := c.writeModel([]*dto.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.graphqlModelSneakName())), defaultImports)
+	err := c.writeModel([]*dto.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.ModelSneakName())), defaultImports)
 	if err != nil {
 		return err
 	}
-	err = c.writeModel([]*dto.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.graphqlModelSneakName())), defaultImports)
+	err = c.writeModel([]*dto.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.ModelSneakName())), defaultImports)
 	if err != nil {
 		return err
 	}
 	queryImports := append(defaultImports, c.fullModelPath())
 	queryImports = append(queryImports, "context")
-	err = c.writeModel([]*dto.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.graphqlModelSneakName())), queryImports)
+	err = c.writeModel([]*dto.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.ModelSneakName())), queryImports)
 	if err != nil {
 		return err
 	}

@@ -18,6 +18,10 @@ func (c *GenContext) ModelName() string {
 
 }
 
+func (c *GenContext) ModelSneakName() string {
+	return strcase.ToSnake(c.ModelName())
+}
+
 func (c *GenContext) graphqlModelSneakName() string {
 	return strcase.ToSnake(c.graphqlModelName())
 }

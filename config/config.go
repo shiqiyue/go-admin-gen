@@ -14,6 +14,8 @@ type Config struct {
 	// 要执行生成任务的model
 	Models []*ModelConfig
 
+	// pkg包名
+	PkgPackage string
 	// 模块目录
 	ModuleDir string
 	// 模块包名
