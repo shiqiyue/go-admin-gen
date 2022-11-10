@@ -16,4 +16,6 @@ type ModelField struct {
 	Type string
 
 	Ptr bool
+
+	Tag string
 }

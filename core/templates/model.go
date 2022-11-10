@@ -13,7 +13,7 @@ import (
 type {{.MODEL.Name}} struct {
 {{- range .MODEL.Fields }}
 	// {{.Name}} {{.Description}}
-	{{if .Ptr}}{{.Name}} *{{.Type}} {{else}}{{.Name}} {{.Type}} {{end}}
+	{{if .Ptr}}{{.Name}} *{{.Type}} {{else}}{{.Name}} {{.Type}} {{end}} {{.Tag}}
 {{ end }}
 }
 `

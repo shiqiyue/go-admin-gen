@@ -91,20 +91,32 @@ func (c *GenContext) genDTO() error {
 					Description: field.Description() + "-最小值",
 					Type:        field.GoFieldType(),
 					Ptr:         true,
+					Tag:         fmt.Sprintf("`qssql:\"%s >= ?\"`", field.DBFieldName()),
 				})
 				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
 					Name:        field.GoFieldName() + "Max",
 					Description: field.Description() + "-最大值",
 					Type:        field.GoFieldType(),
 					Ptr:         true,
+					Tag:         fmt.Sprintf("`qssql:\"%s <= ?\"`", field.DBFieldName()),
 				})
 			}
-			if goType == "string" || goType == "bool" {
+			if goType == "string" {
 				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
 					Name:        field.GoFieldName(),
 					Description: field.Description(),
 					Type:        field.GoFieldType(),
 					Ptr:         true,
+					Tag:         fmt.Sprintf("`qssql:\"%s like ?\" qsformat:\"%s\"`", field.DBFieldName(), "%%%s%%"),
+				})
+			}
+			if goType == "bool" {
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+					Name:        field.GoFieldName(),
+					Description: field.Description(),
+					Type:        field.GoFieldType(),
+					Ptr:         true,
+					Tag:         fmt.Sprintf("`qssql:\"%s = ?\"`", field.DBFieldName()),
 				})
 			}
 			if goType == "int32" || goType == "int" || goType == "int64" {
@@ -113,6 +125,7 @@ func (c *GenContext) genDTO() error {
 					Description: field.Description(),
 					Type:        "[]" + field.GoFieldType(),
 					Ptr:         false,
+					Tag:         fmt.Sprintf("`qssql:\"%s in ?\"`", field.DBFieldName()),
 				})
 			}
 
