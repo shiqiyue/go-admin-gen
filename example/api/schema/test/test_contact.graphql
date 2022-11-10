@@ -43,7 +43,7 @@ enum ContactSortKeys {
 }
 
 """联系人分页过滤参数"""
-input ContactPageFilter {
+input ContactPageFilter @goModel(model: "github.com/shiqiyue/go-admin-gen/example/modules/test/dto.ContactPageFilter") {
 	"""创建时间-最小值"""
 	createdAtMin: Time
 	"""创建时间-最大值"""
@@ -61,16 +61,16 @@ input ContactPageFilter {
 }
 
 """联系人分页参数"""
-input ContactPageInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example/test/dto.ContactQuery") {
+input ContactPageInput @goModel(model: "github.com/shiqiyue/go-admin-gen/example/modules/test/dto.ContactQuery") {
 	"""页数"""
 	pageNum: Int! = 1@validate(rules: "min=1,max=1000", name: "页数")
 	"""分页大小"""
 	pageSize: Int! = 10@validate(rules: "min=1,max=200", name: "分页大小")
 	"""过滤条件"""
-	filter: ContactPageFilter @goModel(model: "github.com/shiqiyue/go-admin-gen/example/test/dto.ContactPageFilter")
+	filter: ContactPageFilter
 	"""排序方向；true:asc;false:desc"""
 	reverse: Boolean = false
-	"""排序方向；true:asc;false:desc"""
+	"""排序字段"""
 	sortKey: ContactSortKeys = ID
 }
 

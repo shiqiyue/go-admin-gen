@@ -19,7 +19,7 @@ func (c *GenContext) genService() error {
 		Methods:     make([]*dto.ModelMethod, 0),
 	}
 	serviceModel.Fields = append(serviceModel.Fields, &dto.ModelField{
-		Name:        "DB",
+		Name:        "Db",
 		Description: "DB实例",
 		Type:        "gorm.DB",
 		Ptr:         true,
