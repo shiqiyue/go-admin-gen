@@ -40,7 +40,7 @@ func (c *GenContext) graphqlRemoveReqName() string {
 }
 
 func (c *GenContext) graphqlPageQueryName() string {
-	return c.graphqlModelLowerCamelName() + "s"
+	return c.graphqlModelLowerCamelName() + "Page"
 }
 
 func (c *GenContext) graphqlGetByIdQueryName() string {

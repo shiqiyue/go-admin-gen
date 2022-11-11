@@ -209,8 +209,8 @@
                 this.listLoading = true
                 this.$apollo.query({
                     query: gql`
-											query contactGroups($data: ContactGroupPageInput!){
-												contactGroups(data: $data) {
+											query contactGroupPage($data: ContactGroupPageInput!){
+												contactGroupPage(data: $data) {
 													total
 													records {
 														id
@@ -231,8 +231,8 @@
                     },
                     fetchPolicy: 'network-only'
                 }).then(data => {
-                    this.data = data.data.contactGroups.records || []
-                    this.total = data.data.contactGroups.total || 0
+                    this.data = data.data.contactGroupPage.records || []
+                    this.total = data.data.contactGroupPage.total || 0
                 }).finally(()=>{
                     this.listLoading = false
                 })

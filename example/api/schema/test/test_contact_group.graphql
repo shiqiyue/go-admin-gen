@@ -107,6 +107,6 @@ extend type Query {
 	"""联系人分组"""
 	contactGroup(id: Int64!): ContactGroup
 	"""联系人分组分页"""
-	contactGroups(data: ContactGroupPageInput!): ContactGroupPageResult!
+	contactGroupPage(data: ContactGroupPageInput!): ContactGroupPageResult!
 }
 
