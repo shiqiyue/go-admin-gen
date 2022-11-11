@@ -207,7 +207,9 @@ func (c *GenContext) writeModel(ms []*templates.Model, pack string, filePath str
 		return err
 	}
 	if path.Ext(filePath) == ".go" && checkGoFile {
-		return util.RunInteractive(fmt.Sprintf("goimports -w %s", filePath))
+		go func() {
+			util.RunInteractive(fmt.Sprintf("goimports -w %s", filePath))
+		}()
 	}
 	return nil
 }

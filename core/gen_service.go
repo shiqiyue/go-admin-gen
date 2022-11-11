@@ -35,8 +35,10 @@ func (c *GenContext) genService() error {
 
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceAddMethod())
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceEditMethod())
+	serviceModel.Methods = append(serviceModel.Methods, c.genServiceRemovesMethod())
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceGetByIdMethod())
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceListMethod())
+	serviceModel.Methods = append(serviceModel.Methods, c.genServiceAllMethod())
 
 	err := c.writeModel([]*templates.Model{serviceModel}, c.Cfg.GetServicePackage(), path.Join(c.Cfg.GetServiceDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), serviceImports, true)
 	if err != nil {
@@ -112,6 +114,43 @@ func (c *GenContext) genServiceEditMethod() *templates.ModelMethod {
 				Name: "entity",
 				Type: "model." + c.ModelName(),
 				Ptr:  true,
+			},
+		},
+		Results: []*templates.ModelMethodResult{
+			&templates.ModelMethodResult{
+				Name: "",
+				Type: "error",
+				Ptr:  false,
+			},
+		},
+	}
+
+}
+
+func (c *GenContext) genServiceRemovesMethod() *templates.ModelMethod {
+	body := fmt.Sprintf(`
+	db := gorms.GetDb(ctx, s.Db)
+
+	err := model.New%sQuerySet(db).IDIn(ids...).Delete()
+	if err != nil {
+		return ferror.Wrap("删除%s异常", err)
+	}
+	return nil
+`, c.ModelName(), c.Name)
+	return &templates.ModelMethod{
+		Name:        "RemoveByIds",
+		Description: "删除" + c.Name,
+		Body:        body,
+		Args: []*templates.ModelMethodArg{
+			&templates.ModelMethodArg{
+				Name: "ctx",
+				Type: "context.Context",
+				Ptr:  false,
+			},
+			&templates.ModelMethodArg{
+				Name: "ids",
+				Type: "[]int64",
+				Ptr:  false,
 			},
 		},
 		Results: []*templates.ModelMethodResult{
@@ -217,6 +256,43 @@ func (c *GenContext) genServiceListMethod() *templates.ModelMethod {
 			},
 			&templates.ModelMethodResult{
 				Type: "int64",
+				Ptr:  false,
+			},
+			&templates.ModelMethodResult{
+				Name: "",
+				Type: "error",
+				Ptr:  false,
+			},
+		},
+	}
+
+}
+
+func (c *GenContext) genServiceAllMethod() *templates.ModelMethod {
+	body := fmt.Sprintf(`
+	db := gorms.GetDb(ctx, s.Db)
+
+	rs := make([]*model.%s, 0)
+	err := model.New%sQuerySet(db).OrderDescByID().All(&rs)
+	if err != nil {
+		return nil, ferror.Wrap("获取%s异常", err)
+	}
+	return rs, nil
+`, c.ModelName(), c.ModelName(), c.Name)
+	return &templates.ModelMethod{
+		Name:        "All",
+		Description: fmt.Sprintf("获取所有%s", c.Name),
+		Body:        body,
+		Args: []*templates.ModelMethodArg{
+			&templates.ModelMethodArg{
+				Name: "ctx",
+				Type: "context.Context",
+				Ptr:  false,
+			},
+		},
+		Results: []*templates.ModelMethodResult{
+			&templates.ModelMethodResult{
+				Type: fmt.Sprintf("[]*model.%s", c.ModelName()),
 				Ptr:  false,
 			},
 			&templates.ModelMethodResult{

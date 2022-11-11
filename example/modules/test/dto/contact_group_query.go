@@ -1,7 +1,17 @@
 package dto
 
 import (
-	model "github.com/shiqiyue/go-admin-gen/example"
+	"encoding/json"
+
+	"gorm.io/datatypes"
+
+	"gorm.io/gorm"
+
+	"time"
+
+	"github.com/shiqiyue/go-admin-gen/example"
+
+	"context"
 )
 
 // ContactGroupPageFilter 过滤联系人分组-入参

@@ -1,9 +1,15 @@
 package service
 
 import (
+	"encoding/json"
+
+	"gorm.io/datatypes"
+
 	"gorm.io/gorm"
 
-	model "github.com/shiqiyue/go-admin-gen/example"
+	"time"
+
+	"github.com/shiqiyue/go-admin-gen/example"
 
 	"context"
 
@@ -43,6 +49,19 @@ func (s *ContactGroupSrv) Edit(ctx context.Context, entity *model.ContactGroup) 
 	err := db.Model(&model.ContactGroup{}).Updates(entity).Error
 	if err != nil {
 		return ferror.Wrap("修改联系人分组异常", err)
+	}
+	return nil
+
+}
+
+// RemoveByIds 删除联系人分组
+func (s *ContactGroupSrv) RemoveByIds(ctx context.Context, ids []int64) error {
+
+	db := gorms.GetDb(ctx, s.Db)
+
+	err := model.NewContactGroupQuerySet(db).IDIn(ids...).Delete()
+	if err != nil {
+		return ferror.Wrap("删除联系人分组异常", err)
 	}
 	return nil
 
@@ -89,5 +108,19 @@ func (s *ContactGroupSrv) List(ctx context.Context, query dto.ContactGroupQuery)
 		return nil, 0, ferror.Wrap("获取联系人分组列表异常", err)
 	}
 	return rs, total, nil
+
+}
+
+// All 获取所有联系人分组
+func (s *ContactGroupSrv) All(ctx context.Context) ([]*model.ContactGroup, error) {
+
+	db := gorms.GetDb(ctx, s.Db)
+
+	rs := make([]*model.ContactGroup, 0)
+	err := model.NewContactGroupQuerySet(db).OrderDescByID().All(&rs)
+	if err != nil {
+		return nil, ferror.Wrap("获取联系人分组异常", err)
+	}
+	return rs, nil
 
 }

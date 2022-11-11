@@ -1,6 +1,10 @@
 package dataloader
 
 import (
+	"encoding/json"
+
+	"gorm.io/datatypes"
+
 	"gorm.io/gorm"
 
 	"time"
