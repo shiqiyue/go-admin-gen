@@ -26,6 +26,10 @@ func (c *GenContext) graphqlModelSneakName() string {
 	return strcase.ToSnake(c.graphqlModelName())
 }
 
+func (c *GenContext) graphqlModelLowerCamelName() string {
+	return strcase.ToLowerCamel(c.graphqlModelName())
+}
+
 func (c *GenContext) fullModelName() string {
 	return c.T.PkgPath() + "." + c.ModelName()
 

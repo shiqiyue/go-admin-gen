@@ -113,8 +113,8 @@ extend type Mutation {
 
 extend type Query {
 	"""联系人分组"""
-	contact_group(id: Int64!): ContactGroup
+	contactGroup(id: Int64!): ContactGroup
 	"""联系人分组分页"""
-	contact_groups(data: ContactGroupPageInput!): ContactGroupPageResult!
+	contactGroups(data: ContactGroupPageInput!): ContactGroupPageResult!
 }
 

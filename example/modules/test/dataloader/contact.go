@@ -1,7 +1,6 @@
 package dataloader
 
 import (
-	model "github.com/shiqiyue/go-admin-gen/example"
 	"gorm.io/gorm"
 
 	"time"

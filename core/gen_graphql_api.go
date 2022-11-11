@@ -120,7 +120,7 @@ func (c *GenContext) genGraphqlQuery(SchemaDocument *ast.SchemaDocument) {
 	}
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
 		Description: c.Name,
-		Name:        c.graphqlModelSneakName(),
+		Name:        c.graphqlModelLowerCamelName(),
 		Arguments:   pkArguments,
 		Type:        NewType(c.graphqlModelName()),
 	})
@@ -131,7 +131,7 @@ func (c *GenContext) genGraphqlQuery(SchemaDocument *ast.SchemaDocument) {
 	}
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
 		Description: fmt.Sprintf("%s分页", c.Name),
-		Name:        c.graphqlModelSneakName() + "s",
+		Name:        c.graphqlModelLowerCamelName() + "s",
 		Arguments:   listQueryArguments,
 		Type:        ast.NonNullNamedType(c.graphqlPageResultName(), nil),
 		Directives:  nil,

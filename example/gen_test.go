@@ -15,8 +15,9 @@ func TestGen(t *testing.T) {
 		config.OptionModuleName("test"),
 		config.OptionPkgPackage("test/pkg"),
 		config.OptionModels([]*config.ModelConfig{&config.ModelConfig{
-			Model: &Contact{},
-			Name:  "联系人",
+			Model:         &Contact{},
+			Name:          "联系人",
+			DisableApiGen: true,
 		}, &config.ModelConfig{
 			Model: &ContactGroup{},
 			Name:  "联系人分组",

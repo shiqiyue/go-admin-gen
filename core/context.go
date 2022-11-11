@@ -32,11 +32,7 @@ func Resolve(m interface{}, name string, cfg *config.Config, config *config.Mode
 }
 
 func (c *GenContext) Gen() error {
-	err := c.GenModelSchema()
-	if err != nil {
-		return err
-	}
-	err = c.GenGraphqlApiSchema()
+	err := c.genService()
 	if err != nil {
 		return err
 	}
@@ -44,13 +40,19 @@ func (c *GenContext) Gen() error {
 	if err != nil {
 		return err
 	}
-	err = c.genService()
-	if err != nil {
-		return err
-	}
 	err = c.genDataloader()
 	if err != nil {
 		return err
+	}
+	if !c.ModelCfg.DisableApiGen {
+		err := c.GenModelSchema()
+		if err != nil {
+			return err
+		}
+		err = c.GenGraphqlApiSchema()
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil

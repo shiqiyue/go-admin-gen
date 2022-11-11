@@ -40,6 +40,8 @@ type ModelConfig struct {
 	Model interface{}
 
 	Name string
+
+	DisableApiGen bool
 }
 
 func (c *ModelConfig) GetModelName() string {
