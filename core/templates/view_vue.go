@@ -17,6 +17,16 @@ type ViewVue struct {
 	TableColumns []*ViewTableColumn
 
 	EditFormItems []*ViewTableEditFormItem
+
+	SearchGql string
+
+	SearchGqlName string
+
+	AddGql string
+
+	EditGql string
+
+	RemovesSql string
 }
 
 type ViewVueFilter struct {

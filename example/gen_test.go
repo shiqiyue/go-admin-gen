@@ -10,11 +10,12 @@ import (
 func TestGen(t *testing.T) {
 	os.RemoveAll("D:\\project\\go-admin-gen\\example\\modules\\")
 	os.RemoveAll("D:\\project\\go-admin-gen\\example\\api\\")
+	os.RemoveAll("D:\\project\\go-admin-gen\\example\\web\\")
 
 	err := go_admin_gen.Gen(
 		config.OptionModuleName("test"),
 		config.OptionPkgPackage("test/pkg"),
-		config.OptionVueSrcDir("test/web/src/views"),
+		config.OptionVueSrcDir("web/src"),
 		config.OptionModels([]*config.ModelConfig{&config.ModelConfig{
 			Model:         &Contact{},
 			Name:          "联系人",

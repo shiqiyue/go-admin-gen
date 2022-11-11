@@ -39,6 +39,26 @@ func (c *GenContext) graphqlRemoveReqName() string {
 	return c.graphqlModelName() + "RemovesInput"
 }
 
+func (c *GenContext) graphqlPageQueryName() string {
+	return c.graphqlModelLowerCamelName() + "s"
+}
+
+func (c *GenContext) graphqlGetByIdQueryName() string {
+	return c.graphqlModelLowerCamelName()
+}
+
+func (c *GenContext) graphqlAddMutationName() string {
+	return "add" + c.graphqlModelName()
+}
+
+func (c *GenContext) graphqlEditMutationName() string {
+	return "edit" + c.graphqlModelName()
+}
+
+func (c *GenContext) graphqlRemovesMutationName() string {
+	return fmt.Sprintf("remove%ss", c.graphqlModelName())
+}
+
 func (c *GenContext) GenGraphqlApiSchema() error {
 	schemaDocument := &ast.SchemaDocument{}
 	c.genGraphqlAddReq(schemaDocument)
@@ -74,7 +94,7 @@ func (c *GenContext) genGraphqlMuation(SchemaDocument *ast.SchemaDocument) {
 	}}
 	addMutation := &ast.FieldDefinition{
 		Description: "添加" + c.Name,
-		Name:        "add" + c.graphqlModelName(),
+		Name:        c.graphqlAddMutationName(),
 		Arguments:   addArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}
@@ -86,7 +106,7 @@ func (c *GenContext) genGraphqlMuation(SchemaDocument *ast.SchemaDocument) {
 	}}
 	editMutation := &ast.FieldDefinition{
 		Description: "修改" + c.Name,
-		Name:        "edit" + c.graphqlModelName(),
+		Name:        c.graphqlEditMutationName(),
 		Arguments:   editArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}
@@ -98,7 +118,7 @@ func (c *GenContext) genGraphqlMuation(SchemaDocument *ast.SchemaDocument) {
 	}}
 	removeMutation := &ast.FieldDefinition{
 		Description: "删除" + c.Name,
-		Name:        fmt.Sprintf("remove%ss", c.graphqlModelName()),
+		Name:        c.graphqlRemovesMutationName(),
 		Arguments:   removeArguments,
 		Type:        NewNotNullType(SCALAR_BOOLEAN),
 	}
@@ -120,7 +140,7 @@ func (c *GenContext) genGraphqlQuery(SchemaDocument *ast.SchemaDocument) {
 	}
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
 		Description: c.Name,
-		Name:        c.graphqlModelLowerCamelName(),
+		Name:        c.graphqlGetByIdQueryName(),
 		Arguments:   pkArguments,
 		Type:        NewType(c.graphqlModelName()),
 	})
@@ -131,7 +151,7 @@ func (c *GenContext) genGraphqlQuery(SchemaDocument *ast.SchemaDocument) {
 	}
 	def.Fields = append(def.Fields, &ast.FieldDefinition{
 		Description: fmt.Sprintf("%s分页", c.Name),
-		Name:        c.graphqlModelLowerCamelName() + "s",
+		Name:        c.graphqlPageQueryName(),
 		Arguments:   listQueryArguments,
 		Type:        ast.NonNullNamedType(c.graphqlPageResultName(), nil),
 		Directives:  nil,

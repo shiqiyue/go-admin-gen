@@ -4,16 +4,52 @@
         <el-row class="query-form">
             <el-form label-suffix="：" label-width="150px" label-position="right">
                 <el-row>
-                        [[ range $Filter := .Filters ]]
-                            [[ if eq  $Filter.ControlType  "input"]]
+                        
+                            
                     <el-col :span="6">
-                        <el-form-item label="[[$Filter.FieldLabel]]">
-                            <el-input v-model="queryParam.filter.[[$Filter.FieldName]]"></el-input>
+                        <el-form-item label="CreatedAt">
+                            <el-input v-model="queryParam.filter.createdAt"></el-input>
                         </el-form-item>
                     </el-col>
 
-                    [[end]]
-                        [[end]]
+                    
+                        
+                            
+                    <el-col :span="6">
+                        <el-form-item label="UpdatedAt">
+                            <el-input v-model="queryParam.filter.updatedAt"></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                    
+                        
+                            
+                    <el-col :span="6">
+                        <el-form-item label="Name">
+                            <el-input v-model="queryParam.filter.name"></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                    
+                        
+                            
+                    <el-col :span="6">
+                        <el-form-item label="Email">
+                            <el-input v-model="queryParam.filter.email"></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                    
+                        
+                            
+                    <el-col :span="6">
+                        <el-form-item label="Phone">
+                            <el-input v-model="queryParam.filter.phone"></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                    
+                        
                 </el-row>
                 <el-row>
                     <el-col :span="24" el-col style="text-align: center;">
@@ -51,17 +87,35 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    [[ range $TableColumn := .TableColumns ]]
-                        [[ if eq $TableColumn.Filter  "" ]]
-                    <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldName]]" prop="[[$TableColumn.FieldLabel]]"/>
-                        [[else]]
-                    <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldName]]">
+                    
+                        
+                    <el-table-column :show-overflow-tooltip="true" label="createdAt">
                         <template slot-scope="scope">
-                            {{ scope.row.[[$TableColumn.FieldLabel]] | [[$TableColumn.Filter]] }}
+                            {{ scope.row.CreatedAt | parseDateTime }}
                         </template>
                     </el-table-column>
-                        [[ end ]]
-                    [[ end ]]
+                        
+                    
+                        
+                    <el-table-column :show-overflow-tooltip="true" label="updatedAt">
+                        <template slot-scope="scope">
+                            {{ scope.row.UpdatedAt | parseDateTime }}
+                        </template>
+                    </el-table-column>
+                        
+                    
+                        
+                    <el-table-column :show-overflow-tooltip="true" label="name" prop="Name"/>
+                        
+                    
+                        
+                    <el-table-column :show-overflow-tooltip="true" label="email" prop="Email"/>
+                        
+                    
+                        
+                    <el-table-column :show-overflow-tooltip="true" label="phone" prop="Phone"/>
+                        
+                    
                 </el-table>
             </el-col>
         </el-row>
@@ -73,23 +127,25 @@
         <!-- /分页 -->
         <el-dialog :visible.sync="editDialog.show">
             <el-form ref="editDialog" :model="editDialog">
-                [[ range $EditFormItem := .EditFormItems ]]
-                <el-form-item :rules="[[$EditFormItem.Rules]]" prop="[[$EditFormItem.FieldName]]" label="[[$EditFormItem.FieldLabel]]">
-                    [[ if eq $EditFormItem.ControlType  "input"]]
-                    <el-input v-model="editDialog.[[$EditFormItem.FieldName]]"/>
-                    [[ else if eq $EditFormItem.ControlType  "date-picker" ]]
-                    <el-date-picker
-                            type="date"
-                            v-model="editDialog.[[$EditFormItem.FieldName]]"
-                    />
-                    [[ else if eq $EditFormItem.ControlType  "date-time-picker" ]]
-                    <el-date-picker
-                            type="datetime"
-                            v-model="editDialog.[[$EditFormItem.FieldName]]"
-                    />
-                    [[ end ]]
+                
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="name" label="Name">
+                    
+                    <el-input v-model="editDialog.name"/>
+                    
                 </el-form-item>
-                [[ end ]]
+                
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="email" label="Email">
+                    
+                    <el-input v-model="editDialog.email"/>
+                    
+                </el-form-item>
+                
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="phone" label="Phone">
+                    
+                    <el-input v-model="editDialog.phone"/>
+                    
+                </el-form-item>
+                
                 <el-form-item>
                     <el-button type="primary" @click="doEdit">保存</el-button>
                     <el-button @click="editDialog.show = false">取消</el-button>
@@ -116,22 +172,44 @@
                     pageNum: 1,
                     pageSize: 10,
                     filter: {
-            [[ range $Filter := .Filters ]]
-                [[if $Filter.FieldName]]
-                    [[$Filter.FieldName]]: null,
-                [[end]]
-                [[if $Filter.FieldName2]]
-                    [[$Filter.FieldName]]: null,
-                [[end]]
-            [[end]]
+            
+                
+                    createdAt: null,
+                
+                
+            
+                
+                    updatedAt: null,
+                
+                
+            
+                
+                    name: null,
+                
+                
+            
+                
+                    email: null,
+                
+                
+            
+                
+                    phone: null,
+                
+                
+            
                     }
                 },
                 editDialog: {
                         show: false,
                         id: null,
-                    [[ range $EditFormItem := .EditFormItems ]]
-                        [[$EditFormItem.FieldName]]: null,
-                    [[end]]
+                    
+                        name: null,
+                    
+                        email: null,
+                    
+                        phone: null,
+                    
                 },
             }
         },
@@ -168,17 +246,25 @@
             },
             toAdd() {
                 this.editDialog.id = null
-                    [[ range $EditFormItem := .EditFormItems ]]
-                this.editDialog.[[$EditFormItem.FieldName]] = null
-                    [[end]]
+                    
+                this.editDialog.name = null
+                    
+                this.editDialog.email = null
+                    
+                this.editDialog.phone = null
+                    
                 this.editDialog.show = true
             },
             toEdit() {
                 var selectItem = this.multipleSelection[0]
                 this.editDialog.id = selectItem.id
-                    [[ range $EditFormItem := .EditFormItems ]]
-                this.editDialog.[[$EditFormItem.FieldName]] = selectItem.[[$EditFormItem.FieldName]]
-                    [[end]]
+                    
+                this.editDialog.name = selectItem.name
+                    
+                this.editDialog.email = selectItem.email
+                    
+                this.editDialog.phone = selectItem.phone
+                    
                 this.editDialog.show = true
             },
 
@@ -190,14 +276,26 @@
             search() {
                 this.listLoading = true
                 this.$apollo.query({
-                    query: gql`[[.SearchGql]]`,
+                    query: gql`query contacts($data: ContactPageInput!){
+        contacts(data: $data) {
+            total
+            records {
+                id
+createdAt
+updatedAt
+name
+email
+phone
+            }
+        }
+	}`,
                     variables: {
                         data: this.queryParam
                     },
                     fetchPolicy: 'network-only'
                 }).then(data => {
-                    this.data = data.data.[[.SearchGqlName]].records || []
-                    this.total = data.data.[[.SearchGqlName]].total || 0
+                    this.data = data.data.contacts.records || []
+                    this.total = data.data.contacts.total || 0
                 }).finally(()=>{
                     this.listLoading = false
                 })
@@ -214,11 +312,17 @@
                             // 修改
                             const requestParam = {}
                             requestParam.id = this.editDialog.id
-                                [[ range $EditFormItem := .EditFormItems ]]
-                            requestParam.[[$EditFormItem.FieldName]] = this.editDialog.[[$EditFormItem.FieldName]]
-                                [[end]]
+                                
+                            requestParam.name = this.editDialog.name
+                                
+                            requestParam.email = this.editDialog.email
+                                
+                            requestParam.phone = this.editDialog.phone
+                                
                             this.$apollo.mutate({
-                                mutation: gql`[[.EditGql]]`,
+                                mutation: gql`mutation editContact($data: ContactEditInput!){
+                editContact(data: $data)
+            }`,
                                 variables: {
                                     data: requestParam
                                 }
@@ -232,11 +336,17 @@
                         } else {
                             // 新增
                             const requestParam = {}
-                                [[ range $EditFormItem := .EditFormItems ]]
-                            requestParam.[[$EditFormItem.FieldName]] = this.editDialog.[[$EditFormItem.FieldName]]
-                                [[end]]
+                                
+                            requestParam.name = this.editDialog.name
+                                
+                            requestParam.email = this.editDialog.email
+                                
+                            requestParam.phone = this.editDialog.phone
+                                
                             this.$apollo.mutate({
-                                mutation: gql`[[.AddGql]]`,
+                                mutation: gql`mutation addContact($data: ContactAddInput!){
+                addContact(data: $data)
+            }`,
                                 variables: {
                                     data: requestParam
                                 }
@@ -263,7 +373,9 @@
                         requestParam.ids.push(item.id)
                     }
                     this.$apollo.mutate({
-                        mutation: gql`[[.RemovesSql]]`,
+                        mutation: gql`mutation removeContacts($data: ContactRemovesInput!){
+                removeContacts(data: $data)
+            }`,
                         variables: {
                             data: requestParam
                         }

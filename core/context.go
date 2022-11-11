@@ -54,6 +54,12 @@ func (c *GenContext) Gen() error {
 			return err
 		}
 	}
+	if !c.ModelCfg.DisableVueGen {
+		err := c.genVueView()
+		if err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

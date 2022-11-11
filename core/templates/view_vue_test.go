@@ -36,6 +36,19 @@ func TestGenViewVueView(t *testing.T) {
 		ControlType: CONTROL_TYPE_INPUT,
 	})
 
+	v.SearchGql = `test
+search`
+	v.SearchGqlName = `testSeasrch`
+	v.AddGql = `
+test
+add`
+	v.EditGql = `
+test
+edit`
+	v.RemovesSql = `
+test
+remove`
+
 	rs, err := util.DoTemplate(VIEW_VUE, "view.vue", v)
 	if err != nil {
 		t.Error(err)

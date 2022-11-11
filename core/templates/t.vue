@@ -7,9 +7,9 @@
                     <el-col :span="6">
                         
                             
-                                <el-form-item label="名称">
-                                    <el-input v-model="queryParam.filter.name"></el-input>
-                                </el-form-item>
+                        <el-form-item label="名称">
+                            <el-input v-model="queryParam.filter.name"></el-input>
+                        </el-form-item>
                             
                         
                     </el-col>
@@ -52,15 +52,15 @@
                     </el-table-column>
                     
                         
-                            <el-table-column :show-overflow-tooltip="true" label="name" prop="名称"/>
+                    <el-table-column :show-overflow-tooltip="true" label="name" prop="名称"/>
                         
                     
                         
-                            <el-table-column :show-overflow-tooltip="true" label="createdAt">
-                                <template slot-scope="scope">
-                                    {{ scope.row.创建时间 | dateFormatter }}
-                                </template>
-                            </el-table-column>
+                    <el-table-column :show-overflow-tooltip="true" label="createdAt">
+                        <template slot-scope="scope">
+                            {{ scope.row.创建时间 | dateFormatter }}
+                        </template>
+                    </el-table-column>
                         
                     
                 </el-table>
@@ -156,18 +156,18 @@
                 this.search()
             },
             toAdd() {
-                this.editDialog.isEdit = false
-                this.editDialog.serviceName = null
-                this.editDialog.jobName = null
-                this.editDialog.cron = null
+                this.editDialog.id = null
+                    
+                this.editDialog.name = null
+                    
                 this.editDialog.show = true
             },
             toEdit() {
-                this.editDialog.isEdit = true
                 var selectItem = this.multipleSelection[0]
-                this.editDialog.serviceName = selectItem.serviceName
-                this.editDialog.jobName = selectItem.jobName
-                this.editDialog.cron = selectItem.cron
+                this.editDialog.id = selectItem.id
+                    
+                this.editDialog.name = selectItem.name
+                    
                 this.editDialog.show = true
             },
 
@@ -178,26 +178,18 @@
             // 列表
             search() {
                 this.listLoading = true
-
                 this.$apollo.query({
-                    query: gql`
-        query jobMetas($data: JobMetasInput!){
-        jobMetas(data: $data) {
-            total
-            records {
-                serviceName
-                jobName
-                cron
-            }
-        }
-        }`,
+                    query: gql`test
+search`,
                     variables: {
                         data: this.queryParam
                     },
                     fetchPolicy: 'network-only'
                 }).then(data => {
-                    this.data = data.data.jobMetas.records || []
-                    this.total = data.data.jobMetas.total || 0
+                    this.data = data.data.testSeasrch.records || []
+                    this.total = data.data.testSeasrch.total || 0
+                }).finally(()=>{
+                    this.listLoading = false
                 })
             },
             // 重置分页条件，发起查询
@@ -208,18 +200,17 @@
             doEdit() {
                 this.$refs.editDialog.validate((valid) => {
                     if (valid) {
-                        if (this.editDialog.isEdit) {
+                        if (this.editDialog.id) {
                             // 修改
                             const requestParam = {}
-                            requestParam.serviceName = this.editDialog.serviceName
-                            requestParam.jobName = this.editDialog.jobName
-                            requestParam.cron = this.editDialog.cron
+                            requestParam.id = this.editDialog.id
+                                
+                            requestParam.name = this.editDialog.name
+                                
                             this.$apollo.mutate({
                                 mutation: gql`
-            mutation editJobMeta($data: EditJobMetaInput!){
-                editJobMeta(data: $data)
-            }
-          `,
+test
+edit`,
                                 variables: {
                                     data: requestParam
                                 }
@@ -233,15 +224,13 @@
                         } else {
                             // 新增
                             const requestParam = {}
-                            requestParam.serviceName = this.editDialog.serviceName
-                            requestParam.jobName = this.editDialog.jobName
-                            requestParam.cron = this.editDialog.cron
+                                
+                            requestParam.name = this.editDialog.name
+                                
                             this.$apollo.mutate({
                                 mutation: gql`
-            mutation addJobMeta($data: AddJobMetaInput!){
-                addJobMeta(data: $data)
-            }
-          `,
+test
+add`,
                                 variables: {
                                     data: requestParam
                                 }
@@ -263,17 +252,14 @@
                     type: 'warning'
                 }).then(() => {
                     var requestParam = {}
-                    requestParam.jobNames = []
+                    requestParam.ids = []
                     for (const item of this.multipleSelection) {
-                        requestParam.jobNames.push(item.jobName)
-                        requestParam.serviceName = item.serviceName
+                        requestParam.ids.push(item.id)
                     }
                     this.$apollo.mutate({
                         mutation: gql`
-            mutation removes($data: removesInput!){
-                removes(data: $data)
-            }
-          `,
+test
+remove`,
                         variables: {
                             data: requestParam
                         }

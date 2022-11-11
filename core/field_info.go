@@ -79,6 +79,29 @@ func (i FieldInfo) IsFilter() bool {
 	return true
 }
 
+func (i FieldInfo) IsVueQuery() bool {
+	name := strings.ToLower(i.Name)
+	if name == DELETED_AT_FIELD_NAME {
+		return false
+	}
+
+	return true
+}
+
+func (i FieldInfo) IsTableColumn() bool {
+	name := strings.ToLower(i.Name)
+	if name == ID_FIELD_NAME || name == DELETED_AT_FIELD_NAME {
+		return false
+	}
+	if i.IsJson() {
+		return false
+	}
+	if i.IsArray() {
+		return false
+	}
+	return true
+}
+
 func (i FieldInfo) IsSortKey() bool {
 	name := strings.ToLower(i.Name)
 	if name == DELETED_AT_FIELD_NAME {
@@ -91,19 +114,6 @@ func (i FieldInfo) IsSortKey() bool {
 		return false
 	}
 	return true
-}
-
-func (i FieldInfo) IsList() bool {
-	return strings.Contains(i.Tag, "list")
-}
-
-func (i FieldInfo) IsWhere() bool {
-	return strings.Contains(i.Tag, "where")
-}
-
-func (i FieldInfo) IsOrder() bool {
-	return strings.Contains(i.Tag, "order")
-
 }
 
 func (i FieldInfo) Scalar() string {

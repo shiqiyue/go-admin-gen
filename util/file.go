@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -39,6 +40,7 @@ func WriteFile(content []byte, filePath string, override bool) error {
 		return err
 	}
 	err = ioutil.WriteFile(filePath, content, 0777)
+	fmt.Println("write file: " + filePath)
 	if err != nil {
 		return err
 	}
