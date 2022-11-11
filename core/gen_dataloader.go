@@ -43,7 +43,7 @@ func (c *GenContext) genDataloader() error {
 	dataloaderImports = append(defaultImports, path.Join(c.Cfg.PkgPackage, "gqlgens/dataloaders"))
 
 	// 这里忽略输出model的错误，因为使用了泛型,goimports会报错
-	err := c.writeModel([]*dto.Model{dataloaderModel}, c.Cfg.GetDataloaderPackage(), path.Join(c.Cfg.GetDataloaderDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), dataloaderImports, false)
+	err := c.writeModel([]*dto.Model{dataloaderModel}, c.Cfg.GetDataloaderPackage(), path.Join(c.Cfg.GetDataloaderDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), dataloaderImports, true)
 	if err != nil {
 		return err
 	}

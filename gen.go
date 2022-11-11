@@ -9,6 +9,9 @@ import (
 )
 
 func Gen(options ...config.Option) error {
+	// 安装或者更新goimports
+	util.RunInteractive("go install golang.org/x/tools/cmd/goimports@latest")
+
 	// 创建配置
 	cfg, err := config.NewConfig(options...)
 	if err != nil {

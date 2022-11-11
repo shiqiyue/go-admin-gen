@@ -1,11 +1,7 @@
 package dataloader
 
 import (
-	"encoding/json"
 	model "github.com/shiqiyue/go-admin-gen/example"
-
-	"gorm.io/datatypes"
-
 	"gorm.io/gorm"
 
 	"time"
