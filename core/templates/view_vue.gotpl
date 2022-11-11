@@ -4,16 +4,15 @@
         <el-row class="query-form">
             <el-form label-suffix="：" label-width="150px" label-position="right">
                 <el-row>
-                        [[ range $Filter := .Filters ]]
-                            [[ if eq  $Filter.ControlType  "input"]]
+                    [[ range $Filter := .Filters -]]
+                        [[ if eq  $Filter.ControlType  "input" -]]
                     <el-col :span="6">
                         <el-form-item label="[[$Filter.FieldLabel]]">
                             <el-input v-model="queryParam.filter.[[$Filter.FieldName]]"></el-input>
                         </el-form-item>
                     </el-col>
-
-                    [[end]]
                         [[end]]
+                    [[end]]
                 </el-row>
                 <el-row>
                     <el-col :span="24" el-col style="text-align: center;">
@@ -51,10 +50,10 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    [[ range $TableColumn := .TableColumns ]]
-                        [[ if eq $TableColumn.Filter  "" ]]
+                    [[ range $TableColumn := .TableColumns -]]
+                        [[ if eq $TableColumn.Filter  "" -]]
                     <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldName]]" prop="[[$TableColumn.FieldLabel]]"/>
-                        [[else]]
+                        [[else -]]
                     <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldName]]">
                         <template slot-scope="scope">
                             {{ scope.row.[[$TableColumn.FieldLabel]] | [[$TableColumn.Filter]] }}
@@ -73,16 +72,16 @@
         <!-- /分页 -->
         <el-dialog :visible.sync="editDialog.show">
             <el-form ref="editDialog" :model="editDialog">
-                [[ range $EditFormItem := .EditFormItems ]]
+                [[ range $EditFormItem := .EditFormItems -]]
                 <el-form-item :rules="[[$EditFormItem.Rules]]" prop="[[$EditFormItem.FieldName]]" label="[[$EditFormItem.FieldLabel]]">
-                    [[ if eq $EditFormItem.ControlType  "input"]]
+                    [[ if eq $EditFormItem.ControlType  "input" -]]
                     <el-input v-model="editDialog.[[$EditFormItem.FieldName]]"/>
-                    [[ else if eq $EditFormItem.ControlType  "date-picker" ]]
+                    [[ else if eq $EditFormItem.ControlType  "date-picker" -]]
                     <el-date-picker
                             type="date"
                             v-model="editDialog.[[$EditFormItem.FieldName]]"
                     />
-                    [[ else if eq $EditFormItem.ControlType  "date-time-picker" ]]
+                    [[ else if eq $EditFormItem.ControlType  "date-time-picker" -]]
                     <el-date-picker
                             type="datetime"
                             v-model="editDialog.[[$EditFormItem.FieldName]]"
@@ -117,11 +116,11 @@
                     pageSize: 10,
                     filter: {
             [[ range $Filter := .Filters ]]
-                [[if $Filter.FieldName]]
-                    [[$Filter.FieldName]]: null,
+                [[if $Filter.FieldName ]]
+                        [[$Filter.FieldName]]: null,
                 [[end]]
-                [[if $Filter.FieldName2]]
-                    [[$Filter.FieldName]]: null,
+                [[if $Filter.FieldName2 ]]
+                        [[$Filter.FieldName]]: null,
                 [[end]]
             [[end]]
                     }

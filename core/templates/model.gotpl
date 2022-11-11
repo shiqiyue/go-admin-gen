@@ -6,12 +6,12 @@ import (
 )
 
 [[ range $MODEL := .MODELS ]]
-// [[$MODEL.Name]] [[$MODEL.Description]]
-[[ range $REMARK := $MODEL.Remarks]]
+// [[$MODEL.Name]] [[$MODEL.Description -]]
+[[ range $REMARK := $MODEL.Remarks -]]
 //[[$REMARK]]
 [[end]]
 type [[$MODEL.Name]] struct {
-[[range $Field:= $MODEL.Fields ]]
+[[range $Field:= $MODEL.Fields -]]
 	// [[$Field.Name]] [[$Field.Description]]
 	[[if $Field.Ptr]][[$Field.Name]] *[[$Field.Type]] [[else]][[$Field.Name]] [[$Field.Type]] [[end]] [[$Field.Tag]]
 [[ end ]]

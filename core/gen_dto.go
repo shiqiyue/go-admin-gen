@@ -91,7 +91,7 @@ func (c *GenContext) genDTO() error {
 				continue
 			}
 			goType := field.Type
-			if goType == "time.Time" {
+			if field.IsTime() {
 				filterDtoModel.Fields = append(filterDtoModel.Fields, &templates.ModelField{
 					Name:        field.GoFieldName() + "Min",
 					Description: field.Description() + "-最小值",

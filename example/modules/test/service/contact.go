@@ -17,9 +17,7 @@ import (
 )
 
 // ContactSrv 联系人-服务
-
 type ContactSrv struct {
-
 	// Db DB实例
 	Db *gorm.DB `inject:""`
 }

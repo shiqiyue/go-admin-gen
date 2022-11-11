@@ -76,6 +76,15 @@ func (i FieldInfo) IsFilter() bool {
 	if name == ID_FIELD_NAME || name == DELETED_AT_FIELD_NAME {
 		return false
 	}
+	if i.IsArray() {
+		return false
+	}
+	if i.IsJson() {
+		return false
+	}
+	if i.IsTime() {
+		return false
+	}
 	return true
 }
 
@@ -132,6 +141,10 @@ func (i FieldInfo) IsJson() bool {
 		return true
 	}
 	return false
+}
+
+func (i FieldInfo) IsTime() bool {
+	return i.Type == "time.Time"
 }
 
 func (i FieldInfo) Description() string {

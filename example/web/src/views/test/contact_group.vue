@@ -4,95 +4,32 @@
         <el-row class="query-form">
             <el-form label-suffix="：" label-width="150px" label-position="right">
                 <el-row>
-                        
-                            
-                    <el-col :span="6">
-                        <el-form-item label="CreatedAt">
-                            <el-input v-model="queryParam.filter.createdAt"></el-input>
-                        </el-form-item>
-                    </el-col>
-
-                    
-                        
-                            
-                    <el-col :span="6">
-                        <el-form-item label="UpdatedAt">
-                            <el-input v-model="queryParam.filter.updatedAt"></el-input>
-                        </el-form-item>
-                    </el-col>
-
-                    
-                        
-                            
                     <el-col :span="6">
                         <el-form-item label="Name">
                             <el-input v-model="queryParam.filter.name"></el-input>
                         </el-form-item>
                     </el-col>
-
-                    
-                        
-                            
                     <el-col :span="6">
                         <el-form-item label="EmailEnable">
                             <el-input v-model="queryParam.filter.emailEnable"></el-input>
                         </el-form-item>
                     </el-col>
-
-                    
-                        
-                            
-                    <el-col :span="6">
-                        <el-form-item label="EmailConfig">
-                            <el-input v-model="queryParam.filter.emailConfig"></el-input>
-                        </el-form-item>
-                    </el-col>
-
-                    
-                        
-                            
                     <el-col :span="6">
                         <el-form-item label="DingTalkEnable">
                             <el-input v-model="queryParam.filter.dingTalkEnable"></el-input>
                         </el-form-item>
                     </el-col>
-
-                    
-                        
-                            
-                    <el-col :span="6">
-                        <el-form-item label="DingTalkConfig">
-                            <el-input v-model="queryParam.filter.dingTalkConfig"></el-input>
-                        </el-form-item>
-                    </el-col>
-
-                    
-                        
-                            
                     <el-col :span="6">
                         <el-form-item label="WebhookEnable">
                             <el-input v-model="queryParam.filter.webhookEnable"></el-input>
                         </el-form-item>
                     </el-col>
-
-                    
-                        
-                            
-                    <el-col :span="6">
-                        <el-form-item label="WebhookConfig">
-                            <el-input v-model="queryParam.filter.webhookConfig"></el-input>
-                        </el-form-item>
-                    </el-col>
-
-                    
-                        
                 </el-row>
                 <el-row>
                     <el-col :span="24" el-col style="text-align: center;">
                         <el-button type="warning" size="small" icon="el-icon-search" @click="research">查询</el-button>
                     </el-col>
                 </el-row>
-
             </el-form>
         </el-row>
         <!-- /搜索 -->
@@ -123,39 +60,20 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    
-                        
-                    <el-table-column :show-overflow-tooltip="true" label="createdAt">
-                        <template slot-scope="scope">
-                            {{ scope.row.CreatedAt | parseDateTime }}
-                        </template>
-                    </el-table-column>
-                        
-                    
-                        
+                    <el-table-column :show-overflow-tooltip="true" label="webhookEnable" prop="WebhookEnable"/>
+                    <el-table-column :show-overflow-tooltip="true" label="dingTalkEnable" prop="DingTalkEnable"/>
+                    <el-table-column :show-overflow-tooltip="true" label="emailEnable" prop="EmailEnable"/>
+                    <el-table-column :show-overflow-tooltip="true" label="name" prop="Name"/>
                     <el-table-column :show-overflow-tooltip="true" label="updatedAt">
                         <template slot-scope="scope">
                             {{ scope.row.UpdatedAt | parseDateTime }}
                         </template>
                     </el-table-column>
-                        
-                    
-                        
-                    <el-table-column :show-overflow-tooltip="true" label="name" prop="Name"/>
-                        
-                    
-                        
-                    <el-table-column :show-overflow-tooltip="true" label="emailEnable" prop="EmailEnable"/>
-                        
-                    
-                        
-                    <el-table-column :show-overflow-tooltip="true" label="dingTalkEnable" prop="DingTalkEnable"/>
-                        
-                    
-                        
-                    <el-table-column :show-overflow-tooltip="true" label="webhookEnable" prop="WebhookEnable"/>
-                        
-                    
+                    <el-table-column :show-overflow-tooltip="true" label="createdAt">
+                        <template slot-scope="scope">
+                            {{ scope.row.CreatedAt | parseDateTime }}
+                        </template>
+                    </el-table-column>
                 </el-table>
             </el-col>
         </el-row>
@@ -167,63 +85,37 @@
         <!-- /分页 -->
         <el-dialog :visible.sync="editDialog.show">
             <el-form ref="editDialog" :model="editDialog">
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="name" label="Name">
-                    
                     <el-input v-model="editDialog.name"/>
-                    
                 </el-form-item>
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="emailEnable" label="EmailEnable">
-                    
                     <el-input v-model="editDialog.emailEnable"/>
-                    
                 </el-form-item>
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="emailConfig" label="EmailConfig">
-                    
                     <el-input v-model="editDialog.emailConfig"/>
-                    
                 </el-form-item>
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="dingTalkEnable" label="DingTalkEnable">
-                    
                     <el-input v-model="editDialog.dingTalkEnable"/>
-                    
                 </el-form-item>
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="dingTalkConfig" label="DingTalkConfig">
-                    
                     <el-input v-model="editDialog.dingTalkConfig"/>
-                    
                 </el-form-item>
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookEnable" label="WebhookEnable">
-                    
                     <el-input v-model="editDialog.webhookEnable"/>
-                    
                 </el-form-item>
-                
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookConfig" label="WebhookConfig">
-                    
                     <el-input v-model="editDialog.webhookConfig"/>
-                    
                 </el-form-item>
-                
                 <el-form-item>
                     <el-button type="primary" @click="doEdit">保存</el-button>
                     <el-button @click="editDialog.show = false">取消</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
-
     </div>
 </template>
-
 <script>
-
     import gql from 'graphql-tag'
-
     export default {
         name: 'DcronService',
         data() {
@@ -236,72 +128,22 @@
                     pageNum: 1,
                     pageSize: 10,
                     filter: {
-            
-                
-                    createdAt: null,
-                
-                
-            
-                
-                    updatedAt: null,
-                
-                
-            
-                
-                    name: null,
-                
-                
-            
-                
-                    emailEnable: null,
-                
-                
-            
-                
-                    emailConfig: null,
-                
-                
-            
-                
-                    dingTalkEnable: null,
-                
-                
-            
-                
-                    dingTalkConfig: null,
-                
-                
-            
-                
-                    webhookEnable: null,
-                
-                
-            
-                
-                    webhookConfig: null,
-                
-                
-            
+                        name: null,
+                        emailEnable: null,
+                        dingTalkEnable: null,
+                        webhookEnable: null,
                     }
                 },
                 editDialog: {
                         show: false,
                         id: null,
-                    
                         name: null,
-                    
                         emailEnable: null,
-                    
                         emailConfig: null,
-                    
                         dingTalkEnable: null,
-                    
                         dingTalkConfig: null,
-                    
                         webhookEnable: null,
-                    
                         webhookConfig: null,
-                    
                 },
             }
         },
@@ -310,7 +152,6 @@
                 if (!this.multipleSelection || this.multipleSelection.length === 0) {
                     return false
                 }
-
                 return true
             },
             editButtonValid() {
@@ -338,44 +179,27 @@
             },
             toAdd() {
                 this.editDialog.id = null
-                    
                 this.editDialog.name = null
-                    
                 this.editDialog.emailEnable = null
-                    
                 this.editDialog.emailConfig = null
-                    
                 this.editDialog.dingTalkEnable = null
-                    
                 this.editDialog.dingTalkConfig = null
-                    
                 this.editDialog.webhookEnable = null
-                    
                 this.editDialog.webhookConfig = null
-                    
                 this.editDialog.show = true
             },
             toEdit() {
                 var selectItem = this.multipleSelection[0]
                 this.editDialog.id = selectItem.id
-                    
                 this.editDialog.name = selectItem.name
-                    
                 this.editDialog.emailEnable = selectItem.emailEnable
-                    
                 this.editDialog.emailConfig = selectItem.emailConfig
-                    
                 this.editDialog.dingTalkEnable = selectItem.dingTalkEnable
-                    
                 this.editDialog.dingTalkConfig = selectItem.dingTalkConfig
-                    
                 this.editDialog.webhookEnable = selectItem.webhookEnable
-                    
                 this.editDialog.webhookConfig = selectItem.webhookConfig
-                    
                 this.editDialog.show = true
             },
-
             // 处理选择的变化
             handleSelectionChange(val) {
                 this.multipleSelection = val
@@ -384,23 +208,24 @@
             search() {
                 this.listLoading = true
                 this.$apollo.query({
-                    query: gql`query contactGroups($data: ContactGroupPageInput!){
-        contactGroups(data: $data) {
-            total
-            records {
-                id
-createdAt
-updatedAt
-name
-emailEnable
-emailConfig
-dingTalkEnable
-dingTalkConfig
-webhookEnable
-webhookConfig
-            }
-        }
-	}`,
+                    query: gql`
+											query contactGroups($data: ContactGroupPageInput!){
+												contactGroups(data: $data) {
+													total
+													records {
+														id
+                						createdAt
+                						updatedAt
+                						name
+                						emailEnable
+                						emailConfig
+                						dingTalkEnable
+                						dingTalkConfig
+                						webhookEnable
+                						webhookConfig
+													}
+												}
+											}`,
                     variables: {
                         data: this.queryParam
                     },
@@ -424,25 +249,17 @@ webhookConfig
                             // 修改
                             const requestParam = {}
                             requestParam.id = this.editDialog.id
-                                
                             requestParam.name = this.editDialog.name
-                                
                             requestParam.emailEnable = this.editDialog.emailEnable
-                                
                             requestParam.emailConfig = this.editDialog.emailConfig
-                                
                             requestParam.dingTalkEnable = this.editDialog.dingTalkEnable
-                                
                             requestParam.dingTalkConfig = this.editDialog.dingTalkConfig
-                                
                             requestParam.webhookEnable = this.editDialog.webhookEnable
-                                
                             requestParam.webhookConfig = this.editDialog.webhookConfig
-                                
                             this.$apollo.mutate({
                                 mutation: gql`mutation editContactGroup($data: ContactGroupEditInput!){
-                editContactGroup(data: $data)
-            }`,
+																	editContactGroup(data: $data)
+															}`,
                                 variables: {
                                     data: requestParam
                                 }
@@ -456,25 +273,17 @@ webhookConfig
                         } else {
                             // 新增
                             const requestParam = {}
-                                
                             requestParam.name = this.editDialog.name
-                                
                             requestParam.emailEnable = this.editDialog.emailEnable
-                                
                             requestParam.emailConfig = this.editDialog.emailConfig
-                                
                             requestParam.dingTalkEnable = this.editDialog.dingTalkEnable
-                                
                             requestParam.dingTalkConfig = this.editDialog.dingTalkConfig
-                                
                             requestParam.webhookEnable = this.editDialog.webhookEnable
-                                
                             requestParam.webhookConfig = this.editDialog.webhookConfig
-                                
                             this.$apollo.mutate({
                                 mutation: gql`mutation addContactGroup($data: ContactGroupAddInput!){
-                addContactGroup(data: $data)
-            }`,
+																	addContactGroup(data: $data)
+															}`,
                                 variables: {
                                     data: requestParam
                                 }
@@ -502,8 +311,8 @@ webhookConfig
                     }
                     this.$apollo.mutate({
                         mutation: gql`mutation removeContactGroups($data: ContactGroupRemovesInput!){
-                removeContactGroups(data: $data)
-            }`,
+																	removeContactGroups(data: $data)
+															}`,
                         variables: {
                             data: requestParam
                         }
@@ -515,17 +324,14 @@ webhookConfig
                     })
                 })
             }
-
         }
     }
 </script>
-
 <style scoped>
     .el-row {
         margin-bottom: 20px;
     }
-
     .danger {
         color: #F56C6C
     }
-</style>
+</style>

@@ -62,14 +62,6 @@ enum ContactGroupSortKeys {
 
 """联系人分组分页过滤参数"""
 input ContactGroupPageFilter @goModel(model: "github.com/shiqiyue/go-admin-gen/example/modules/test/dto.ContactGroupPageFilter") {
-	"""创建时间-最小值"""
-	createdAtMin: Time
-	"""创建时间-最大值"""
-	createdAtMax: Time
-	"""更新时间-最小值"""
-	updatedAtMin: Time
-	"""更新时间-最大值"""
-	updatedAtMax: Time
 	"""名称"""
 	name: String
 	"""是否启用邮箱通知"""
