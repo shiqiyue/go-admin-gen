@@ -25,7 +25,7 @@ func WriteTemplate(t, filename string, data interface{}) error {
 }
 
 func DoTemplate(t, filename string, data interface{}) ([]byte, error) {
-	temp, err := template.New(filename).Parse(t)
+	temp, err := template.New(filename).Delims("[[", "]]").Parse(t)
 	if err != nil {
 		return nil, err
 	}

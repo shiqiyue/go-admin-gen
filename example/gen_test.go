@@ -14,6 +14,7 @@ func TestGen(t *testing.T) {
 	err := go_admin_gen.Gen(
 		config.OptionModuleName("test"),
 		config.OptionPkgPackage("test/pkg"),
+		config.OptionVueSrcDir("test/web/src/views"),
 		config.OptionModels([]*config.ModelConfig{&config.ModelConfig{
 			Model:         &Contact{},
 			Name:          "联系人",

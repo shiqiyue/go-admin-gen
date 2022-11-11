@@ -2,7 +2,7 @@ package core
 
 import (
 	"fmt"
-	"github.com/shiqiyue/go-admin-gen/core/dto"
+	"github.com/shiqiyue/go-admin-gen/core/templates"
 	"path"
 )
 
@@ -11,14 +11,14 @@ func (c *GenContext) serviceName() string {
 }
 
 func (c *GenContext) genService() error {
-	serviceModel := &dto.Model{
+	serviceModel := &templates.Model{
 		Name:        c.serviceName(),
 		ShortName:   "s",
 		Description: fmt.Sprintf("%s-服务", c.Name),
-		Fields:      make([]*dto.ModelField, 0),
-		Methods:     make([]*dto.ModelMethod, 0),
+		Fields:      make([]*templates.ModelField, 0),
+		Methods:     make([]*templates.ModelMethod, 0),
 	}
-	serviceModel.Fields = append(serviceModel.Fields, &dto.ModelField{
+	serviceModel.Fields = append(serviceModel.Fields, &templates.ModelField{
 		Name:        "Db",
 		Description: "DB实例",
 		Type:        "gorm.DB",
@@ -38,7 +38,7 @@ func (c *GenContext) genService() error {
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceGetByIdMethod())
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceListMethod())
 
-	err := c.writeModel([]*dto.Model{serviceModel}, c.Cfg.GetServicePackage(), path.Join(c.Cfg.GetServiceDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), serviceImports, true)
+	err := c.writeModel([]*templates.Model{serviceModel}, c.Cfg.GetServicePackage(), path.Join(c.Cfg.GetServiceDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), serviceImports, true)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func (c *GenContext) genService() error {
 	return nil
 }
 
-func (c *GenContext) genServiceAddMethod() *dto.ModelMethod {
+func (c *GenContext) genServiceAddMethod() *templates.ModelMethod {
 	body := fmt.Sprintf(`
 	db := gorms.GetDb(ctx, s.Db)
 	// 添加
@@ -56,29 +56,29 @@ func (c *GenContext) genServiceAddMethod() *dto.ModelMethod {
 	}
 	return entity, nil
 `, c.Name)
-	return &dto.ModelMethod{
+	return &templates.ModelMethod{
 		Name:        "Add",
 		Description: "添加" + c.Name,
 		Body:        body,
-		Args: []*dto.ModelMethodArg{
-			&dto.ModelMethodArg{
+		Args: []*templates.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "ctx",
 				Type: "context.Context",
 				Ptr:  false,
 			},
-			&dto.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "entity",
 				Type: "model." + c.ModelName(),
 				Ptr:  true,
 			},
 		},
-		Results: []*dto.ModelMethodResult{
-			&dto.ModelMethodResult{
+		Results: []*templates.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Name: "",
 				Type: "model." + c.ModelName(),
 				Ptr:  true,
 			},
-			&dto.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Name: "",
 				Type: "error",
 				Ptr:  false,
@@ -88,7 +88,7 @@ func (c *GenContext) genServiceAddMethod() *dto.ModelMethod {
 
 }
 
-func (c *GenContext) genServiceEditMethod() *dto.ModelMethod {
+func (c *GenContext) genServiceEditMethod() *templates.ModelMethod {
 	body := fmt.Sprintf(`
 	db := gorms.GetDb(ctx, s.Db)
 	// 修改
@@ -98,24 +98,24 @@ func (c *GenContext) genServiceEditMethod() *dto.ModelMethod {
 	}
 	return nil
 `, c.ModelName(), c.Name)
-	return &dto.ModelMethod{
+	return &templates.ModelMethod{
 		Name:        "Edit",
 		Description: "修改" + c.Name,
 		Body:        body,
-		Args: []*dto.ModelMethodArg{
-			&dto.ModelMethodArg{
+		Args: []*templates.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "ctx",
 				Type: "context.Context",
 				Ptr:  false,
 			},
-			&dto.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "entity",
 				Type: "model." + c.ModelName(),
 				Ptr:  true,
 			},
 		},
-		Results: []*dto.ModelMethodResult{
-			&dto.ModelMethodResult{
+		Results: []*templates.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Name: "",
 				Type: "error",
 				Ptr:  false,
@@ -125,7 +125,7 @@ func (c *GenContext) genServiceEditMethod() *dto.ModelMethod {
 
 }
 
-func (c *GenContext) genServiceGetByIdMethod() *dto.ModelMethod {
+func (c *GenContext) genServiceGetByIdMethod() *templates.ModelMethod {
 	body := fmt.Sprintf(`
 	db := gorms.GetDb(ctx, s.Db)
 
@@ -139,28 +139,28 @@ func (c *GenContext) genServiceGetByIdMethod() *dto.ModelMethod {
 	}
 	return r, nil
 `, c.ModelName(), c.ModelName(), c.Name)
-	return &dto.ModelMethod{
+	return &templates.ModelMethod{
 		Name:        "GetById",
 		Description: "通过ID获取" + c.Name,
 		Body:        body,
-		Args: []*dto.ModelMethodArg{
-			&dto.ModelMethodArg{
+		Args: []*templates.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "ctx",
 				Type: "context.Context",
 				Ptr:  false,
 			},
-			&dto.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "id",
 				Type: "int64",
 				Ptr:  false,
 			},
 		},
-		Results: []*dto.ModelMethodResult{
-			&dto.ModelMethodResult{
+		Results: []*templates.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Type: "model." + c.ModelName(),
 				Ptr:  true,
 			},
-			&dto.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Name: "",
 				Type: "error",
 				Ptr:  false,
@@ -170,7 +170,7 @@ func (c *GenContext) genServiceGetByIdMethod() *dto.ModelMethod {
 
 }
 
-func (c *GenContext) genServiceListMethod() *dto.ModelMethod {
+func (c *GenContext) genServiceListMethod() *templates.ModelMethod {
 	body := fmt.Sprintf(`
 	db := gorms.GetDb(ctx, s.Db)
 	qs := model.New%sQuerySet(db)
@@ -194,32 +194,32 @@ func (c *GenContext) genServiceListMethod() *dto.ModelMethod {
 	}
 	return rs, total, nil
 `, c.ModelName(), c.Name, c.ModelName(), c.Name)
-	return &dto.ModelMethod{
+	return &templates.ModelMethod{
 		Name:        "List",
 		Description: fmt.Sprintf("%s列表查询", c.Name),
 		Body:        body,
-		Args: []*dto.ModelMethodArg{
-			&dto.ModelMethodArg{
+		Args: []*templates.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "ctx",
 				Type: "context.Context",
 				Ptr:  false,
 			},
-			&dto.ModelMethodArg{
+			&templates.ModelMethodArg{
 				Name: "query",
 				Type: fmt.Sprintf("dto." + c.queryDtoName()),
 				Ptr:  false,
 			},
 		},
-		Results: []*dto.ModelMethodResult{
-			&dto.ModelMethodResult{
+		Results: []*templates.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Type: fmt.Sprintf("[]*model.%s", c.ModelName()),
 				Ptr:  false,
 			},
-			&dto.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Type: "int64",
 				Ptr:  false,
 			},
-			&dto.ModelMethodResult{
+			&templates.ModelMethodResult{
 				Name: "",
 				Type: "error",
 				Ptr:  false,

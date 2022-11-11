@@ -31,9 +31,13 @@ type Config struct {
 
 	// Api 目录
 	ApiDir string
-
 	// Api graphql相对路径
 	ApiGraphqlDir string
+
+	// Vue Src 目录
+	VueSrcDir string
+	// Vue view相对路径
+	VueViewDir string
 }
 
 type ModelConfig struct {
@@ -42,6 +46,8 @@ type ModelConfig struct {
 	Name string
 
 	DisableApiGen bool
+
+	DisableVueGen bool
 }
 
 func (c *ModelConfig) GetModelName() string {
@@ -64,6 +70,10 @@ func (c *ModelConfig) GetModelNameWithModuleToSnake(moduleName string) string {
 
 func (c Config) GetDataloaderDir() string {
 	return path.Join(c.ModuleDir, c.ModuleName, c.DataloaderDir)
+}
+
+func (c Config) GetVueViewDir() string {
+	return path.Join(c.VueSrcDir, c.VueViewDir, c.ModuleName)
 }
 
 func (c Config) GetDataloaderFullPackage() string {

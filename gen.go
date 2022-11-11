@@ -43,6 +43,9 @@ func checkConfig(cfg *config.Config) error {
 	if cfg.PkgPackage == "" {
 		return errors.New("PkgPackage can not be empty")
 	}
+	if cfg.VueSrcDir == "" {
+		return errors.New("VueSrcDir can not be empty")
+	}
 	if len(cfg.Models) == 0 {
 		return errors.New("Models can not be empty")
 	}
@@ -70,6 +73,9 @@ func checkConfig(cfg *config.Config) error {
 	}
 	if cfg.ApiGraphqlDir == "" {
 		cfg.ApiGraphqlDir = "schema" + string(os.PathSeparator) + cfg.ModuleName
+	}
+	if cfg.VueViewDir == "" {
+		cfg.VueViewDir = "views"
 	}
 	return nil
 }

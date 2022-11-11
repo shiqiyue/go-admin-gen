@@ -382,3 +382,67 @@ func OptionApiGraphqlDir(o string) Option {
 		o: o,
 	}
 }
+
+type optionVueSrcDirImpl struct {
+	o string
+}
+
+func (o optionVueSrcDirImpl) apply(c *Config) error {
+	c.VueSrcDir = o.o
+	return nil
+}
+
+func (o optionVueSrcDirImpl) Equal(v optionVueSrcDirImpl) bool {
+	switch {
+	case !cmp.Equal(o.o, v.o):
+		return false
+	}
+	return true
+}
+
+func (o optionVueSrcDirImpl) String() string {
+	name := "OptionVueSrcDir"
+
+	// hack to avoid go vet error about passing a function to Sprintf
+	var value interface{} = o.o
+	return fmt.Sprintf("%s: %+v", name, value)
+}
+
+// OptionVueSrcDir Vue Src 目录
+func OptionVueSrcDir(o string) Option {
+	return optionVueSrcDirImpl{
+		o: o,
+	}
+}
+
+type optionVueViewDirImpl struct {
+	o string
+}
+
+func (o optionVueViewDirImpl) apply(c *Config) error {
+	c.VueViewDir = o.o
+	return nil
+}
+
+func (o optionVueViewDirImpl) Equal(v optionVueViewDirImpl) bool {
+	switch {
+	case !cmp.Equal(o.o, v.o):
+		return false
+	}
+	return true
+}
+
+func (o optionVueViewDirImpl) String() string {
+	name := "OptionVueViewDir"
+
+	// hack to avoid go vet error about passing a function to Sprintf
+	var value interface{} = o.o
+	return fmt.Sprintf("%s: %+v", name, value)
+}
+
+// OptionVueViewDir Vue view相对路径
+func OptionVueViewDir(o string) Option {
+	return optionVueViewDirImpl{
+		o: o,
+	}
+}

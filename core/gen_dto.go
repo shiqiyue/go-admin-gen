@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"github.com/shiqiyue/go-admin-gen/core/dto"
 	"github.com/shiqiyue/go-admin-gen/core/templates"
 	"github.com/shiqiyue/go-admin-gen/util"
 	"path"
@@ -49,30 +48,30 @@ func (c *GenContext) filterDtoName() string {
 
 func (c *GenContext) genDTO() error {
 
-	addDtoModel := &dto.Model{
+	addDtoModel := &templates.Model{
 		Name:        c.addDtoName(),
 		Description: fmt.Sprintf("添加%s-入参", c.Name),
-		Fields:      make([]*dto.ModelField, 0),
+		Fields:      make([]*templates.ModelField, 0),
 	}
-	editDtoModel := &dto.Model{
+	editDtoModel := &templates.Model{
 		Name:        c.editDtoName(),
 		Description: fmt.Sprintf("修改%s-入参", c.Name),
-		Fields:      make([]*dto.ModelField, 0),
+		Fields:      make([]*templates.ModelField, 0),
 	}
-	filterDtoModel := &dto.Model{
+	filterDtoModel := &templates.Model{
 		Name:        c.filterDtoName(),
 		Description: fmt.Sprintf("过滤%s-入参", c.Name),
-		Fields:      make([]*dto.ModelField, 0),
+		Fields:      make([]*templates.ModelField, 0),
 	}
-	queryDtoModel := &dto.Model{
+	queryDtoModel := &templates.Model{
 		Name:        c.queryDtoName(),
 		Description: fmt.Sprintf("查询%s-入参", c.Name),
-		Fields:      make([]*dto.ModelField, 0),
+		Fields:      make([]*templates.ModelField, 0),
 	}
 
 	for _, field := range c.Fields {
 		if field.IsAdd() {
-			addDtoModel.Fields = append(addDtoModel.Fields, &dto.ModelField{
+			addDtoModel.Fields = append(addDtoModel.Fields, &templates.ModelField{
 				Name:        field.GoFieldName(),
 				Description: field.Description(),
 				Type:        field.GoFieldType(),
@@ -80,7 +79,7 @@ func (c *GenContext) genDTO() error {
 			})
 		}
 		if field.IsEdit() {
-			editDtoModel.Fields = append(editDtoModel.Fields, &dto.ModelField{
+			editDtoModel.Fields = append(editDtoModel.Fields, &templates.ModelField{
 				Name:        field.GoFieldName(),
 				Description: field.Description(),
 				Type:        field.GoFieldType(),
@@ -93,14 +92,14 @@ func (c *GenContext) genDTO() error {
 			}
 			goType := field.Type
 			if goType == "time.Time" {
-				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &templates.ModelField{
 					Name:        field.GoFieldName() + "Min",
 					Description: field.Description() + "-最小值",
 					Type:        field.GoFieldType(),
 					Ptr:         true,
 					Tag:         fmt.Sprintf("`qssql:\"%s >= ?\"`", field.DBFieldName()),
 				})
-				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &templates.ModelField{
 					Name:        field.GoFieldName() + "Max",
 					Description: field.Description() + "-最大值",
 					Type:        field.GoFieldType(),
@@ -109,7 +108,7 @@ func (c *GenContext) genDTO() error {
 				})
 			}
 			if goType == "string" {
-				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &templates.ModelField{
 					Name:        field.GoFieldName(),
 					Description: field.Description(),
 					Type:        field.GoFieldType(),
@@ -118,7 +117,7 @@ func (c *GenContext) genDTO() error {
 				})
 			}
 			if goType == "bool" {
-				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &templates.ModelField{
 					Name:        field.GoFieldName(),
 					Description: field.Description(),
 					Type:        field.GoFieldType(),
@@ -127,7 +126,7 @@ func (c *GenContext) genDTO() error {
 				})
 			}
 			if goType == "int32" || goType == "int" || goType == "int64" {
-				filterDtoModel.Fields = append(filterDtoModel.Fields, &dto.ModelField{
+				filterDtoModel.Fields = append(filterDtoModel.Fields, &templates.ModelField{
 					Name:        field.GoFieldName() + "s",
 					Description: field.Description(),
 					Type:        "[]" + field.GoFieldType(),
@@ -138,35 +137,35 @@ func (c *GenContext) genDTO() error {
 
 		}
 	}
-	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &templates.ModelField{
 		Name:        "PageNum",
 		Description: "第几页",
 		Type:        "int",
 		Ptr:         true,
 		Tag:         "",
 	})
-	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &templates.ModelField{
 		Name:        "PageSize",
 		Description: "每页几条记录",
 		Type:        "int",
 		Ptr:         true,
 		Tag:         "",
 	})
-	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &templates.ModelField{
 		Name:        "Filter",
 		Description: "过滤条件",
 		Type:        c.filterDtoName(),
 		Ptr:         true,
 		Tag:         "",
 	})
-	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &templates.ModelField{
 		Name:        "Reverse",
 		Description: "排序方向; true:asc, false:desc",
 		Type:        "bool",
 		Ptr:         true,
 		Tag:         "",
 	})
-	queryDtoModel.Fields = append(queryDtoModel.Fields, &dto.ModelField{
+	queryDtoModel.Fields = append(queryDtoModel.Fields, &templates.ModelField{
 		Name:        "SortKey",
 		Description: "排序字段",
 		Type:        fmt.Sprintf("model.%sDBSchemaField", c.ModelName()),
@@ -174,17 +173,17 @@ func (c *GenContext) genDTO() error {
 		Tag:         "",
 	})
 
-	err := c.writeModel([]*dto.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.ModelSneakName())), defaultImports, true)
+	err := c.writeModel([]*templates.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.ModelSneakName())), defaultImports, true)
 	if err != nil {
 		return err
 	}
-	err = c.writeModel([]*dto.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.ModelSneakName())), defaultImports, true)
+	err = c.writeModel([]*templates.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.ModelSneakName())), defaultImports, true)
 	if err != nil {
 		return err
 	}
 	queryImports := append(defaultImports, c.fullModelPath())
 	queryImports = append(queryImports, "context")
-	err = c.writeModel([]*dto.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.ModelSneakName())), queryImports, true)
+	err = c.writeModel([]*templates.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.ModelSneakName())), queryImports, true)
 	if err != nil {
 		return err
 	}
@@ -192,7 +191,7 @@ func (c *GenContext) genDTO() error {
 	return nil
 }
 
-func (c *GenContext) writeModel(ms []*dto.Model, pack string, filePath string, inputs []string, checkGoFile bool) error {
+func (c *GenContext) writeModel(ms []*templates.Model, pack string, filePath string, inputs []string, checkGoFile bool) error {
 	templateData := make(map[string]interface{}, 0)
 	templateData["PACKAGE"] = pack
 	templateData["MODELS"] = ms
