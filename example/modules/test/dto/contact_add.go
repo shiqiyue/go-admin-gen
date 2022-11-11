@@ -1,6 +1,7 @@
 package dto
 
 // ContactAddDto 添加联系人-入参
+
 type ContactAddDto struct {
 
 	// Name 名称

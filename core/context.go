@@ -48,6 +48,10 @@ func (c *GenContext) Gen() error {
 	if err != nil {
 		return err
 	}
+	err = c.genDataloader()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

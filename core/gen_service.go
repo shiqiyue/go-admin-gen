@@ -92,7 +92,7 @@ func (c *GenContext) genServiceEditMethod() *dto.ModelMethod {
 	body := fmt.Sprintf(`
 	db := gorms.GetDb(ctx, s.Db)
 	// 修改
-	err := db.Model(&model.%s{}).Updates(entity)
+	err := db.Model(&model.%s{}).Updates(entity).Error
 	if err != nil {
 		return ferror.Wrap("修改%s异常", err)
 	}

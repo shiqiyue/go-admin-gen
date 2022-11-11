@@ -10,6 +10,9 @@ import (
 
 {{ range $MODEL := .MODELS }}
 // {{$MODEL.Name}} {{$MODEL.Description}}
+{{ range $REMARK := $MODEL.Remarks}}
+// {{$REMARK}}
+{{end}}
 type {{$MODEL.Name}} struct {
 {{range $Field:= $MODEL.Fields }}
 	// {{$Field.Name}} {{$Field.Description}}

@@ -12,6 +12,8 @@ type Model struct {
 
 	Description string
 
+	Remarks []string
+
 	Fields []*ModelField
 
 	Methods []*ModelMethod

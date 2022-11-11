@@ -17,10 +17,11 @@ import (
 )
 
 // ContactSrv 联系人-服务
+
 type ContactSrv struct {
 
-	// DB DB实例
-	DB *gorm.DB `inject:""`
+	// Db DB实例
+	Db *gorm.DB `inject:""`
 }
 
 // Add 添加联系人
@@ -41,7 +42,7 @@ func (s *ContactSrv) Edit(ctx context.Context, entity *model.Contact) error {
 
 	db := gorms.GetDb(ctx, s.Db)
 	// 修改
-	err := db.Model(&model.Contact{}).Updates(entity)
+	err := db.Model(&model.Contact{}).Updates(entity).Error
 	if err != nil {
 		return ferror.Wrap("修改联系人异常", err)
 	}

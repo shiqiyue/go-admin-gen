@@ -7,6 +7,7 @@ import (
 )
 
 // ContactPageFilter 过滤联系人-入参
+
 type ContactPageFilter struct {
 
 	// CreatedAtMin 创建时间-最小值
@@ -32,6 +33,7 @@ type ContactPageFilter struct {
 }
 
 // ContactQuery 查询联系人-入参
+
 type ContactQuery struct {
 
 	// PageNum 第几页
