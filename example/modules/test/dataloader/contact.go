@@ -2,6 +2,7 @@ package dataloader
 
 import (
 	"encoding/json"
+	model "github.com/shiqiyue/go-admin-gen/example"
 
 	"gorm.io/datatypes"
 
@@ -14,7 +15,7 @@ import (
 
 // ContactLoader 联系人-dataloader
 
-// go:generate go run github.com/shiqiyue/dataloaden ContactPkLoader int64 *github.com/shiqiyue/go-admin-gen/example.Contact
+//go:generate go run github.com/shiqiyue/dataloaden ContactPkLoader int64 *github.com/shiqiyue/go-admin-gen/example.Contact
 
 type ContactLoader struct {
 
@@ -22,7 +23,7 @@ type ContactLoader struct {
 	Db *gorm.DB `inject:""`
 
 	// pkLoader 主键Loader
-	pkLoader dataloaders.LoadHelper[AlarmPkLoader]
+	pkLoader dataloaders.LoadHelper[ContactPkLoader]
 }
 
 // SetUp 初始化Dataloader

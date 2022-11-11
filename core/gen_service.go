@@ -38,7 +38,7 @@ func (c *GenContext) genService() error {
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceGetByIdMethod())
 	serviceModel.Methods = append(serviceModel.Methods, c.genServiceListMethod())
 
-	err := c.writeModel([]*dto.Model{serviceModel}, c.Cfg.GetServicePackage(), path.Join(c.Cfg.GetServiceDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), serviceImports)
+	err := c.writeModel([]*dto.Model{serviceModel}, c.Cfg.GetServicePackage(), path.Join(c.Cfg.GetServiceDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), serviceImports, true)
 	if err != nil {
 		return err
 	}

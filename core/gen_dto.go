@@ -174,17 +174,17 @@ func (c *GenContext) genDTO() error {
 		Tag:         "",
 	})
 
-	err := c.writeModel([]*dto.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.ModelSneakName())), defaultImports)
+	err := c.writeModel([]*dto.Model{addDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_add.go", c.ModelSneakName())), defaultImports, true)
 	if err != nil {
 		return err
 	}
-	err = c.writeModel([]*dto.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.ModelSneakName())), defaultImports)
+	err = c.writeModel([]*dto.Model{editDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_edit.go", c.ModelSneakName())), defaultImports, true)
 	if err != nil {
 		return err
 	}
 	queryImports := append(defaultImports, c.fullModelPath())
 	queryImports = append(queryImports, "context")
-	err = c.writeModel([]*dto.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.ModelSneakName())), queryImports)
+	err = c.writeModel([]*dto.Model{filterDtoModel, queryDtoModel}, c.Cfg.GetDtoPackage(), path.Join(c.Cfg.GetDtoDir(), fmt.Sprintf("%s_query.go", c.ModelSneakName())), queryImports, true)
 	if err != nil {
 		return err
 	}
@@ -192,7 +192,7 @@ func (c *GenContext) genDTO() error {
 	return nil
 }
 
-func (c *GenContext) writeModel(ms []*dto.Model, pack string, filePath string, inputs []string) error {
+func (c *GenContext) writeModel(ms []*dto.Model, pack string, filePath string, inputs []string, checkGoFile bool) error {
 	templateData := make(map[string]interface{}, 0)
 	templateData["PACKAGE"] = pack
 	templateData["MODELS"] = ms
@@ -207,7 +207,7 @@ func (c *GenContext) writeModel(ms []*dto.Model, pack string, filePath string, i
 	if err != nil {
 		return err
 	}
-	if path.Ext(filePath) == ".go" {
+	if path.Ext(filePath) == ".go" && checkGoFile {
 		return util.RunInteractive(fmt.Sprintf("goimports -w %s", filePath))
 	}
 	return nil

@@ -32,7 +32,7 @@ func (c *GenContext) genDataloader() error {
 	dataloaderModel.Fields = append(dataloaderModel.Fields, &dto.ModelField{
 		Name:        "pkLoader",
 		Description: "主键Loader",
-		Type:        "dataloaders.LoadHelper[AlarmPkLoader]",
+		Type:        fmt.Sprintf("dataloaders.LoadHelper[%sPkLoader]", c.ModelName()),
 		Ptr:         false,
 	})
 
@@ -42,7 +42,8 @@ func (c *GenContext) genDataloader() error {
 	dataloaderImports := append(defaultImports, c.Cfg.GetDtoFullPackage())
 	dataloaderImports = append(defaultImports, path.Join(c.Cfg.PkgPackage, "gqlgens/dataloaders"))
 
-	err := c.writeModel([]*dto.Model{dataloaderModel}, c.Cfg.GetDataloaderPackage(), path.Join(c.Cfg.GetDataloaderDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), dataloaderImports)
+	// 这里忽略输出model的错误，因为使用了泛型,goimports会报错
+	err := c.writeModel([]*dto.Model{dataloaderModel}, c.Cfg.GetDataloaderPackage(), path.Join(c.Cfg.GetDataloaderDir(), fmt.Sprintf("%s.go", c.ModelSneakName())), dataloaderImports, false)
 	if err != nil {
 		return err
 	}
