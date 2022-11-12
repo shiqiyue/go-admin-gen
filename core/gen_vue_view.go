@@ -19,7 +19,7 @@ func (c *GenContext) genVueView() error {
 	for _, field := range c.Fields {
 		if field.IsFilter() {
 			v.Filters = append(v.Filters, &templates.ViewVueFilter{
-				FieldLabel:  field.Name,
+				FieldLabel:  field.Description(),
 				FieldName:   field.GqlFieldName(),
 				FieldName2:  "",
 				ControlType: templates.CONTROL_TYPE_INPUT,
@@ -35,7 +35,7 @@ func (c *GenContext) genVueView() error {
 				rules = "[{required: true, message: '不能为空'}]"
 			}
 			v.EditFormItems = append(v.EditFormItems, &templates.ViewTableEditFormItem{
-				FieldLabel:  field.Name,
+				FieldLabel:  field.Description(),
 				FieldName:   field.GqlFieldName(),
 				Rules:       rules,
 				ControlType: templates.CONTROL_TYPE_INPUT,
@@ -48,7 +48,7 @@ func (c *GenContext) genVueView() error {
 				filter = "parseDateTime"
 			}
 			v.TableColumns = append(v.TableColumns, &templates.ViewTableColumn{
-				FieldLabel: field.Name,
+				FieldLabel: field.Description(),
 				FieldName:  field.GqlFieldName(),
 				Filter:     filter,
 			})

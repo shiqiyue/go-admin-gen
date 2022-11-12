@@ -5,22 +5,22 @@
             <el-form label-suffix="：" label-width="150px" label-position="right">
                 <el-row>
                     <el-col :span="6">
-                        <el-form-item label="Name">
+                        <el-form-item label="名称">
                             <el-input v-model="queryParam.filter.name"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="EmailEnable">
+                        <el-form-item label="是否启用邮箱通知">
                             <el-input v-model="queryParam.filter.emailEnable"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="DingTalkEnable">
+                        <el-form-item label="是否启用钉钉推送">
                             <el-input v-model="queryParam.filter.dingTalkEnable"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="WebhookEnable">
+                        <el-form-item label="是否启用webhook">
                             <el-input v-model="queryParam.filter.webhookEnable"></el-input>
                         </el-form-item>
                     </el-col>
@@ -60,18 +60,18 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="webhookEnable" prop="WebhookEnable"/>
-                    <el-table-column :show-overflow-tooltip="true" label="dingTalkEnable" prop="DingTalkEnable"/>
-                    <el-table-column :show-overflow-tooltip="true" label="emailEnable" prop="EmailEnable"/>
-                    <el-table-column :show-overflow-tooltip="true" label="name" prop="Name"/>
+                    <el-table-column :show-overflow-tooltip="true" label="webhookEnable" prop="是否启用webhook"/>
+                    <el-table-column :show-overflow-tooltip="true" label="dingTalkEnable" prop="是否启用钉钉推送"/>
+                    <el-table-column :show-overflow-tooltip="true" label="emailEnable" prop="是否启用邮箱通知"/>
+                    <el-table-column :show-overflow-tooltip="true" label="name" prop="名称"/>
                     <el-table-column :show-overflow-tooltip="true" label="updatedAt">
                         <template slot-scope="scope">
-                            {{ scope.row.UpdatedAt | parseDateTime }}
+                            {{ scope.row.更新时间 | parseDateTime }}
                         </template>
                     </el-table-column>
                     <el-table-column :show-overflow-tooltip="true" label="createdAt">
                         <template slot-scope="scope">
-                            {{ scope.row.CreatedAt | parseDateTime }}
+                            {{ scope.row.创建时间 | parseDateTime }}
                         </template>
                     </el-table-column>
                 </el-table>
@@ -85,25 +85,25 @@
         <!-- /分页 -->
         <el-dialog :visible.sync="editDialog.show">
             <el-form ref="editDialog" :model="editDialog">
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="name" label="Name">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="name" label="名称">
                     <el-input v-model="editDialog.name"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="emailEnable" label="EmailEnable">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="emailEnable" label="是否启用邮箱通知">
                     <el-input v-model="editDialog.emailEnable"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="emailConfig" label="EmailConfig">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="emailConfig" label="邮箱配置">
                     <el-input v-model="editDialog.emailConfig"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="dingTalkEnable" label="DingTalkEnable">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="dingTalkEnable" label="是否启用钉钉推送">
                     <el-input v-model="editDialog.dingTalkEnable"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="dingTalkConfig" label="DingTalkConfig">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="dingTalkConfig" label="钉钉推送配置">
                     <el-input v-model="editDialog.dingTalkConfig"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookEnable" label="WebhookEnable">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookEnable" label="是否启用webhook">
                     <el-input v-model="editDialog.webhookEnable"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookConfig" label="WebhookConfig">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookConfig" label="webhook配置">
                     <el-input v-model="editDialog.webhookConfig"/>
                 </el-form-item>
                 <el-form-item>

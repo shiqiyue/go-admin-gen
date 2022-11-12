@@ -1,5 +1,15 @@
 package dto
 
+import (
+	"encoding/json"
+
+	"gorm.io/datatypes"
+
+	"gorm.io/gorm"
+
+	"time"
+)
+
 // ContactAddDto 添加联系人-入参
 type ContactAddDto struct {
 	// Name 名称

@@ -5,17 +5,17 @@
             <el-form label-suffix="：" label-width="150px" label-position="right">
                 <el-row>
                     <el-col :span="6">
-                        <el-form-item label="Name">
+                        <el-form-item label="名称">
                             <el-input v-model="queryParam.filter.name"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="Email">
+                        <el-form-item label="邮箱">
                             <el-input v-model="queryParam.filter.email"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="Phone">
+                        <el-form-item label="手机号码">
                             <el-input v-model="queryParam.filter.phone"></el-input>
                         </el-form-item>
                     </el-col>
@@ -55,17 +55,17 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="phone" prop="Phone"/>
-                    <el-table-column :show-overflow-tooltip="true" label="email" prop="Email"/>
-                    <el-table-column :show-overflow-tooltip="true" label="name" prop="Name"/>
+                    <el-table-column :show-overflow-tooltip="true" label="phone" prop="手机号码"/>
+                    <el-table-column :show-overflow-tooltip="true" label="email" prop="邮箱"/>
+                    <el-table-column :show-overflow-tooltip="true" label="name" prop="名称"/>
                     <el-table-column :show-overflow-tooltip="true" label="updatedAt">
                         <template slot-scope="scope">
-                            {{ scope.row.UpdatedAt | parseDateTime }}
+                            {{ scope.row.更新时间 | parseDateTime }}
                         </template>
                     </el-table-column>
                     <el-table-column :show-overflow-tooltip="true" label="createdAt">
                         <template slot-scope="scope">
-                            {{ scope.row.CreatedAt | parseDateTime }}
+                            {{ scope.row.创建时间 | parseDateTime }}
                         </template>
                     </el-table-column>
                 </el-table>
@@ -79,13 +79,13 @@
         <!-- /分页 -->
         <el-dialog :visible.sync="editDialog.show">
             <el-form ref="editDialog" :model="editDialog">
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="name" label="Name">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="name" label="名称">
                     <el-input v-model="editDialog.name"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="email" label="Email">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="email" label="邮箱">
                     <el-input v-model="editDialog.email"/>
                 </el-form-item>
-                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="phone" label="Phone">
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="phone" label="手机号码">
                     <el-input v-model="editDialog.phone"/>
                 </el-form-item>
                 <el-form-item>
