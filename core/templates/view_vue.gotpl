@@ -52,11 +52,11 @@
                     </el-table-column>
                     [[ range $TableColumn := .TableColumns -]]
                         [[ if eq $TableColumn.Filter  "" -]]
-                    <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldName]]" prop="[[$TableColumn.FieldLabel]]"/>
+                    <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldLabel]]" prop="[[$TableColumn.FieldName]]"/>
                         [[else -]]
-                    <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldName]]">
+                    <el-table-column :show-overflow-tooltip="true" label="[[$TableColumn.FieldLabel]]">
                         <template slot-scope="scope">
-                            {{ scope.row.[[$TableColumn.FieldLabel]] | [[$TableColumn.Filter]] }}
+                            {{ scope.row.[[$TableColumn.FieldName]] | [[$TableColumn.Filter]] }}
                         </template>
                     </el-table-column>
                         [[ end ]]

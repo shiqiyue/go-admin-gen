@@ -55,17 +55,17 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="phone" prop="手机号码"/>
-                    <el-table-column :show-overflow-tooltip="true" label="email" prop="邮箱"/>
-                    <el-table-column :show-overflow-tooltip="true" label="name" prop="名称"/>
-                    <el-table-column :show-overflow-tooltip="true" label="updatedAt">
+                    <el-table-column :show-overflow-tooltip="true" label="手机号码" prop="phone"/>
+                    <el-table-column :show-overflow-tooltip="true" label="邮箱" prop="email"/>
+                    <el-table-column :show-overflow-tooltip="true" label="名称" prop="name"/>
+                    <el-table-column :show-overflow-tooltip="true" label="更新时间">
                         <template slot-scope="scope">
-                            {{ scope.row.更新时间 | parseDateTime }}
+                            {{ scope.row.updatedAt | parseDateTime }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="createdAt">
+                    <el-table-column :show-overflow-tooltip="true" label="创建时间">
                         <template slot-scope="scope">
-                            {{ scope.row.创建时间 | parseDateTime }}
+                            {{ scope.row.createdAt | parseDateTime }}
                         </template>
                     </el-table-column>
                 </el-table>

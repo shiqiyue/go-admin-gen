@@ -60,18 +60,18 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="webhookEnable" prop="是否启用webhook"/>
-                    <el-table-column :show-overflow-tooltip="true" label="dingTalkEnable" prop="是否启用钉钉推送"/>
-                    <el-table-column :show-overflow-tooltip="true" label="emailEnable" prop="是否启用邮箱通知"/>
-                    <el-table-column :show-overflow-tooltip="true" label="name" prop="名称"/>
-                    <el-table-column :show-overflow-tooltip="true" label="updatedAt">
+                    <el-table-column :show-overflow-tooltip="true" label="是否启用webhook" prop="webhookEnable"/>
+                    <el-table-column :show-overflow-tooltip="true" label="是否启用钉钉推送" prop="dingTalkEnable"/>
+                    <el-table-column :show-overflow-tooltip="true" label="是否启用邮箱通知" prop="emailEnable"/>
+                    <el-table-column :show-overflow-tooltip="true" label="名称" prop="name"/>
+                    <el-table-column :show-overflow-tooltip="true" label="更新时间">
                         <template slot-scope="scope">
-                            {{ scope.row.更新时间 | parseDateTime }}
+                            {{ scope.row.updatedAt | parseDateTime }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="createdAt">
+                    <el-table-column :show-overflow-tooltip="true" label="创建时间">
                         <template slot-scope="scope">
-                            {{ scope.row.创建时间 | parseDateTime }}
+                            {{ scope.row.createdAt | parseDateTime }}
                         </template>
                     </el-table-column>
                 </el-table>
