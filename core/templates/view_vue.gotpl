@@ -8,7 +8,7 @@
                         [[ if eq  $Filter.ControlType  "input" -]]
                     <el-col :span="6">
                         <el-form-item label="[[$Filter.FieldLabel]]">
-                            <el-input v-model="queryParam.filter.[[$Filter.FieldName]]"></el-input>
+                            <el-input v-model="queryParam.filter.[[$Filter.FieldName]]" clearable></el-input>
                         </el-form-item>
                     </el-col>
                         [[end]]
@@ -104,7 +104,7 @@
     import gql from 'graphql-tag'
 
     export default {
-        name: 'DcronService',
+        name: '[[.Name]]',
         data() {
             return {
                 listLoading: false,

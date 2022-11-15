@@ -11,6 +11,8 @@ var (
 )
 
 type ViewVue struct {
+	Name string
+
 	// 过滤项
 	Filters []*ViewVueFilter
 	// 表格项

@@ -6,22 +6,22 @@
                 <el-row>
                     <el-col :span="6">
                         <el-form-item label="名称">
-                            <el-input v-model="queryParam.filter.name"></el-input>
+                            <el-input v-model="queryParam.filter.name" clearable></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <el-form-item label="是否启用邮箱通知">
-                            <el-input v-model="queryParam.filter.emailEnable"></el-input>
+                            <el-input v-model="queryParam.filter.emailEnable" clearable></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <el-form-item label="是否启用钉钉推送">
-                            <el-input v-model="queryParam.filter.dingTalkEnable"></el-input>
+                            <el-input v-model="queryParam.filter.dingTalkEnable" clearable></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
                         <el-form-item label="是否启用webhook">
-                            <el-input v-model="queryParam.filter.webhookEnable"></el-input>
+                            <el-input v-model="queryParam.filter.webhookEnable" clearable></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -117,7 +117,7 @@
 <script>
     import gql from 'graphql-tag'
     export default {
-        name: 'DcronService',
+        name: 'ContactGroup',
         data() {
             return {
                 listLoading: false,

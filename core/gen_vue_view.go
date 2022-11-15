@@ -11,6 +11,7 @@ import (
 
 func (c *GenContext) genVueView() error {
 	v := &templates.ViewVue{
+		Name:          c.ModelName(),
 		Filters:       make([]*templates.ViewVueFilter, 0),
 		TableColumns:  make([]*templates.ViewTableColumn, 0),
 		EditFormItems: make([]*templates.ViewTableEditFormItem, 0),
