@@ -178,19 +178,19 @@
                 this.listLoading = true
                 this.$apollo.query({
                     query: gql`
-											query contactPage($data: ContactPageInput!){
-												contactPage(data: $data) {
-													total
-													records {
-														id
+						query contactPage($data: ContactPageInput!){
+							contactPage(data: $data) {
+								total
+								records {
+									id
                 						createdAt
                 						updatedAt
                 						name
                 						email
                 						phone
-													}
-												}
-											}`,
+								}
+							}
+						}`,
                     variables: {
                         data: this.queryParam
                     },

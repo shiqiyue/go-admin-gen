@@ -209,11 +209,11 @@
                 this.listLoading = true
                 this.$apollo.query({
                     query: gql`
-											query contactGroupPage($data: ContactGroupPageInput!){
-												contactGroupPage(data: $data) {
-													total
-													records {
-														id
+						query contactGroupPage($data: ContactGroupPageInput!){
+							contactGroupPage(data: $data) {
+								total
+								records {
+									id
                 						createdAt
                 						updatedAt
                 						name
@@ -223,9 +223,9 @@
                 						dingTalkConfig
                 						webhookEnable
                 						webhookConfig
-													}
-												}
-											}`,
+								}
+							}
+						}`,
                     variables: {
                         data: this.queryParam
                     },

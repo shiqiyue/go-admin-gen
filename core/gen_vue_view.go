@@ -63,14 +63,14 @@ func (c *GenContext) genVueView() error {
 	})
 	v.SearchGqlName = c.graphqlPageQueryName()
 	v.SearchGql = fmt.Sprintf(`
-											query %s($data: %s!){
-												%s(data: $data) {
-													total
-													records {
-														%s
-													}
-												}
-											}`,
+						query %s($data: %s!){
+							%s(data: $data) {
+								total
+								records {
+									%s
+								}
+							}
+						}`,
 		v.SearchGqlName, c.graphqlPageInputName(), v.SearchGqlName, strings.Join(queryFields, "\n                						"))
 	v.AddGql = fmt.Sprintf(`mutation %s($data: %s!){
 																	%s(data: $data)

@@ -46,7 +46,7 @@ func (s *ContactGroupSrv) Edit(ctx context.Context, entity *model.ContactGroup) 
 
 	db := gorms.GetDb(ctx, s.Db)
 	// 修改
-	err := db.Model(&model.ContactGroup{}).Updates(entity).Error
+	err := db.Model(&model.ContactGroup{ID: entity.ID}).Updates(entity).Error
 	if err != nil {
 		return ferror.Wrap("修改联系人分组异常", err)
 	}
