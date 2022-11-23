@@ -14,6 +14,8 @@ input ContactGroupAddInput @goModel(model: "github.com/shiqiyue/go-admin-gen/exa
 	webhookEnable: Boolean!
 	"""webhook配置"""
 	webhookConfig: Any!
+	"""类型"""
+	type: Int!
 }
 
 """修改联系人分组参数"""
@@ -34,6 +36,8 @@ input ContactGroupEditInput @goModel(model: "github.com/shiqiyue/go-admin-gen/ex
 	webhookEnable: Boolean!
 	"""webhook配置"""
 	webhookConfig: Any!
+	"""类型"""
+	type: Int!
 }
 
 """删除联系人分组参数"""
@@ -58,6 +62,8 @@ enum ContactGroupSortKeys {
 	DING_TALK_ENABLE
 	"""是否启用webhook"""
 	WEBHOOK_ENABLE
+	"""类型"""
+	TYPE
 }
 
 """联系人分组分页过滤参数"""
@@ -70,6 +76,8 @@ input ContactGroupPageFilter @goModel(model: "github.com/shiqiyue/go-admin-gen/e
 	dingTalkEnable: Boolean
 	"""是否启用webhook"""
 	webhookEnable: Boolean
+	"""类型"""
+	types: [Int]
 }
 
 """联系人分组分页参数"""

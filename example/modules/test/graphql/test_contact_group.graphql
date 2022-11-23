@@ -20,4 +20,6 @@ type ContactGroup @goModel(model: "github.com/shiqiyue/go-admin-gen/example.Cont
 	webhookEnable: Boolean!
 	"""webhook配置"""
 	webhookConfig: Any!
+	"""类型"""
+	type: Int!
 }

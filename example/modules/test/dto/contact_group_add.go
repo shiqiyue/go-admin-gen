@@ -26,4 +26,6 @@ type ContactGroupAddDto struct {
 	WebhookEnable bool
 	// WebhookConfig webhook配置
 	WebhookConfig datatypes.JSON
+	// Type 类型
+	Type int
 }

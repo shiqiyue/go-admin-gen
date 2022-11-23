@@ -24,6 +24,11 @@
                             <el-input v-model="queryParam.filter.webhookEnable" clearable></el-input>
                         </el-form-item>
                     </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="类型">
+                            <el-input v-model="queryParam.filter.types" clearable></el-input>
+                        </el-form-item>
+                    </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="24" el-col style="text-align: center;">
@@ -60,6 +65,11 @@
                             {{ scope.$index + 1 }}
                         </template>
                     </el-table-column>
+                    <el-table-column :show-overflow-tooltip="true" label="创建时间">
+                        <template slot-scope="scope">
+                            {{ scope.row.createdAt | parseDateTime }}
+                        </template>
+                    </el-table-column>
                     <el-table-column :show-overflow-tooltip="true" label="是否启用webhook" prop="webhookEnable"/>
                     <el-table-column :show-overflow-tooltip="true" label="是否启用钉钉推送" prop="dingTalkEnable"/>
                     <el-table-column :show-overflow-tooltip="true" label="是否启用邮箱通知" prop="emailEnable"/>
@@ -69,11 +79,7 @@
                             {{ scope.row.updatedAt | parseDateTime }}
                         </template>
                     </el-table-column>
-                    <el-table-column :show-overflow-tooltip="true" label="创建时间">
-                        <template slot-scope="scope">
-                            {{ scope.row.createdAt | parseDateTime }}
-                        </template>
-                    </el-table-column>
+                    <el-table-column :show-overflow-tooltip="true" label="类型" prop="type"/>
                 </el-table>
             </el-col>
         </el-row>
@@ -106,6 +112,9 @@
                 <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="webhookConfig" label="webhook配置">
                     <el-input v-model="editDialog.webhookConfig"/>
                 </el-form-item>
+                <el-form-item :rules="[{required: true, message: '不能为空'}]" prop="type" label="类型">
+                    <el-input v-model="editDialog.type"/>
+                </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="doEdit">保存</el-button>
                     <el-button @click="editDialog.show = false">取消</el-button>
@@ -132,6 +141,7 @@
                         emailEnable: null,
                         dingTalkEnable: null,
                         webhookEnable: null,
+                        types: null,
                     }
                 },
                 editDialog: {
@@ -144,6 +154,7 @@
                         dingTalkConfig: null,
                         webhookEnable: null,
                         webhookConfig: null,
+                        type: null,
                 },
             }
         },
@@ -186,6 +197,7 @@
                 this.editDialog.dingTalkConfig = null
                 this.editDialog.webhookEnable = null
                 this.editDialog.webhookConfig = null
+                this.editDialog.type = null
                 this.editDialog.show = true
             },
             toEdit() {
@@ -198,6 +210,7 @@
                 this.editDialog.dingTalkConfig = selectItem.dingTalkConfig
                 this.editDialog.webhookEnable = selectItem.webhookEnable
                 this.editDialog.webhookConfig = selectItem.webhookConfig
+                this.editDialog.type = selectItem.type
                 this.editDialog.show = true
             },
             // 处理选择的变化
@@ -223,6 +236,7 @@
                 						dingTalkConfig
                 						webhookEnable
                 						webhookConfig
+                						type
 								}
 							}
 						}`,
@@ -256,6 +270,7 @@
                             requestParam.dingTalkConfig = this.editDialog.dingTalkConfig
                             requestParam.webhookEnable = this.editDialog.webhookEnable
                             requestParam.webhookConfig = this.editDialog.webhookConfig
+                            requestParam.type = this.editDialog.type
                             this.$apollo.mutate({
                                 mutation: gql`mutation editContactGroup($data: ContactGroupEditInput!){
 																	editContactGroup(data: $data)
@@ -280,6 +295,7 @@
                             requestParam.dingTalkConfig = this.editDialog.dingTalkConfig
                             requestParam.webhookEnable = this.editDialog.webhookEnable
                             requestParam.webhookConfig = this.editDialog.webhookConfig
+                            requestParam.type = this.editDialog.type
                             this.$apollo.mutate({
                                 mutation: gql`mutation addContactGroup($data: ContactGroupAddInput!){
 																	addContactGroup(data: $data)

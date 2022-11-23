@@ -22,6 +22,7 @@ type ContactGroup struct {
 	DingTalkConfig datatypes.JSON `gorm:"comment:钉钉推送配置"`
 	WebhookEnable  bool           `gorm:"not null; comment:是否启用webhook"`
 	WebhookConfig  datatypes.JSON `gorm:"comment:webhook配置"`
+	Type           int            `gorm:"comment:类型"`
 }
 
 func (p *ContactGroup) TableName() string {

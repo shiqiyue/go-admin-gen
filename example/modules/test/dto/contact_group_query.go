@@ -24,6 +24,8 @@ type ContactGroupPageFilter struct {
 	DingTalkEnable *bool `qssql:"ding_talk_enable = ?"`
 	// WebhookEnable 是否启用webhook
 	WebhookEnable *bool `qssql:"webhook_enable = ?"`
+	// Types 类型
+	Types []int `qssql:"type in ?"`
 }
 
 // ContactGroupQuery 查询联系人分组-入参

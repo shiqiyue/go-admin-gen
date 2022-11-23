@@ -19,12 +19,23 @@ func (c *GenContext) genVueView() error {
 	queryFields := make([]string, 0)
 	for _, field := range c.Fields {
 		if field.IsFilter() {
-			v.Filters = append(v.Filters, &templates.ViewVueFilter{
-				FieldLabel:  field.Description(),
-				FieldName:   field.GqlFieldName(),
-				FieldName2:  "",
-				ControlType: templates.CONTROL_TYPE_INPUT,
-			})
+			scalar := field.Scalar()
+			if scalar == SCALAR_INT32 || scalar == SCALAR_INT || scalar == SCALAR_INT64 {
+				v.Filters = append(v.Filters, &templates.ViewVueFilter{
+					FieldLabel:  field.Description(),
+					FieldName:   field.GqlFieldName() + "s",
+					FieldName2:  "",
+					ControlType: templates.CONTROL_TYPE_INPUT,
+				})
+			} else {
+				v.Filters = append(v.Filters, &templates.ViewVueFilter{
+					FieldLabel:  field.Description(),
+					FieldName:   field.GqlFieldName(),
+					FieldName2:  "",
+					ControlType: templates.CONTROL_TYPE_INPUT,
+				})
+			}
+
 		}
 		if field.IsVueQuery() {
 			queryFields = append(queryFields, field.GqlFieldName())
