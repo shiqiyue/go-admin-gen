@@ -12,7 +12,8 @@ import (
 	"test/pkg/gqlgens/dataloaders"
 )
 
-// ContactGroupLoader 联系人分组-dataloader//go:generate go run github.com/shiqiyue/dataloaden ContactGroupPkLoader int64 *github.com/shiqiyue/go-admin-gen/example.ContactGroup
+// ContactGroupLoader 联系人分组-dataloader
+//go:generate go run github.com/shiqiyue/dataloaden ContactGroupPkLoader int64 *github.com/shiqiyue/go-admin-gen/example.ContactGroup
 
 type ContactGroupLoader struct {
 	// Db DB 实例
