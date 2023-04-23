@@ -20,7 +20,7 @@ func (c *GenContext) genDataloader() error {
 		Remarks:     make([]string, 0),
 	}
 
-	dataloaderModel.Remarks = append(dataloaderModel.Remarks, fmt.Sprintf("go:generate go run github.com/shiqiyue/dataloaden %sPkLoader int64 *%s", c.ModelName(), c.fullModelName()))
+	dataloaderModel.Remarks = append(dataloaderModel.Remarks, fmt.Sprintf("go:generate dataloaden %sPkLoader int64 *%s", c.ModelName(), c.fullModelName()))
 
 	dataloaderModel.Fields = append(dataloaderModel.Fields, &templates.ModelField{
 		Name:        "Db",
